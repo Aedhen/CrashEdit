@@ -352,8 +352,6 @@ namespace CrashEdit
             dlgProgress = null;
 
             Icon = OldResources.CBHacksIcon;
-            Width = Settings.Default.DefaultFormW;
-            Height = Settings.Default.DefaultFormH; 
             Load += new EventHandler(OldMainForm_Load);
             FormClosing += new FormClosingEventHandler(OldMainForm_FormClosing);
             Text = $"CrashEdit-tweaked v{Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
@@ -1610,13 +1608,8 @@ namespace CrashEdit
 
         private void OldMainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (WindowState == FormWindowState.Normal)
-                Settings.Default.FormBounds = Bounds;
-            else
-                Settings.Default.FormBounds = RestoreBounds;
-
+            Settings.Default.FormBounds = WindowState == FormWindowState.Normal ? Bounds : RestoreBounds;
             Settings.Default.FormWindowState = WindowState;
-
             Settings.Default.Save();
         }
     }

@@ -20,8 +20,6 @@ namespace CrashEdit
                 dpdLang.Items.Add(Resources.ResourceManager.GetString("Language", new System.Globalization.CultureInfo(lang)));
             dpdLang.SelectedItem = Resources.ResourceManager.GetString("Language", new System.Globalization.CultureInfo(Settings.Default.Language));
             dpdLang.SelectedIndexChanged += new EventHandler(dpdLang_SelectedIndexChanged);
-            numW.Value = Settings.Default.DefaultFormW;
-            numH.Value = Settings.Default.DefaultFormH;
             chkNormalDisplay.Checked = Settings.Default.DisplayNormals;
             chkCollisionDisplay.Checked = Settings.Default.DisplayFrameCollision;
             chkUseAnimLinks.Checked = Settings.Default.UseAnimLinks;
@@ -30,9 +28,6 @@ namespace CrashEdit
             chkAnimGrid.Checked = Settings.Default.DisplayAnimGrid;
             numAnimGrid.Value = Settings.Default.AnimGridLen;
             fraLang.Text = Resources.Config_FraLang;
-            fraSize.Text = Resources.Config_fraSize;
-            lblW.Text = Resources.Config_lblW;
-            lblH.Text = Resources.Config_lblH;
             fraClearCol.Text = Resources.Config_fraClearCol;
             fraAnimGrid.Text = Resources.Config_fraAnimGrid;
             chkAnimGrid.Text = Resources.Config_chkAnimGrid;
@@ -69,18 +64,6 @@ namespace CrashEdit
                 Settings.Default.Reset();
                 ((OldMainForm)TopLevelControl).ResetConfig();
             }
-        }
-
-        private void numW_ValueChanged(object sender, EventArgs e)
-        {
-            Settings.Default.DefaultFormW = (int)numW.Value;
-            Settings.Default.Save();
-        }
-
-        private void numH_ValueChanged(object sender, EventArgs e)
-        {
-            Settings.Default.DefaultFormH = (int)numH.Value;
-            Settings.Default.Save();
         }
 
         private void chkNormalDisplay_CheckedChanged(object sender, EventArgs e)

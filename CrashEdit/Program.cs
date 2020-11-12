@@ -63,13 +63,11 @@ namespace CrashEdit
             {
                 Properties.Resources.Culture = Crash.UI.Properties.Resources.Culture = new System.Globalization.CultureInfo(Properties.Settings.Default.Language);
             }
-            catch {
+            catch 
+            {
                 Properties.Settings.Default.Language = "en";
             }
-            if (Properties.Settings.Default.DefaultFormW < 640)
-                Properties.Settings.Default.DefaultFormW = 640;
-            if (Properties.Settings.Default.DefaultFormH < 480)
-                Properties.Settings.Default.DefaultFormH = 480;
+
             Properties.Settings.Default.Save();
             LoadC3AnimLinks();
             Application.EnableVisualStyles();

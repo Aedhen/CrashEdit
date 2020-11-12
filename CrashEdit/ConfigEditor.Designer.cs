@@ -30,11 +30,6 @@
         {
             this.fraLang = new System.Windows.Forms.GroupBox();
             this.dpdLang = new MetroFramework.Controls.MetroComboBox();
-            this.fraSize = new System.Windows.Forms.GroupBox();
-            this.lblH = new System.Windows.Forms.Label();
-            this.lblW = new System.Windows.Forms.Label();
-            this.numH = new DarkUI.Controls.DarkNumericUpDown();
-            this.numW = new DarkUI.Controls.DarkNumericUpDown();
             this.cdlClearCol = new System.Windows.Forms.ColorDialog();
             this.fraClearCol = new System.Windows.Forms.GroupBox();
             this.picClearCol = new System.Windows.Forms.PictureBox();
@@ -61,9 +56,6 @@
             this.chkFindWrap = new MetroFramework.Controls.MetroCheckBox();
             this.fra3dViewer = new System.Windows.Forms.GroupBox();
             this.fraLang.SuspendLayout();
-            this.fraSize.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numH)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numW)).BeginInit();
             this.fraClearCol.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picClearCol)).BeginInit();
             this.fraAnimGrid.SuspendLayout();
@@ -103,84 +95,6 @@
             this.dpdLang.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.dpdLang.UseCustomBackColor = true;
             this.dpdLang.UseSelectable = true;
-            // 
-            // fraSize
-            // 
-            this.fraSize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
-            this.fraSize.Controls.Add(this.lblH);
-            this.fraSize.Controls.Add(this.lblW);
-            this.fraSize.Controls.Add(this.numH);
-            this.fraSize.Controls.Add(this.numW);
-            this.fraSize.Font = new System.Drawing.Font("Arial", 9F);
-            this.fraSize.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraSize.Location = new System.Drawing.Point(183, 22);
-            this.fraSize.Name = "fraSize";
-            this.fraSize.Size = new System.Drawing.Size(135, 74);
-            this.fraSize.TabIndex = 1;
-            this.fraSize.TabStop = false;
-            this.fraSize.Text = "Default Window Size";
-            // 
-            // lblH
-            // 
-            this.lblH.Location = new System.Drawing.Point(6, 49);
-            this.lblH.Name = "lblH";
-            this.lblH.Size = new System.Drawing.Size(44, 16);
-            this.lblH.TabIndex = 3;
-            this.lblH.Text = "Height";
-            // 
-            // lblW
-            // 
-            this.lblW.Location = new System.Drawing.Point(6, 22);
-            this.lblW.Name = "lblW";
-            this.lblW.Size = new System.Drawing.Size(38, 16);
-            this.lblW.TabIndex = 2;
-            this.lblW.Text = "Width";
-            // 
-            // numH
-            // 
-            this.numH.Location = new System.Drawing.Point(50, 46);
-            this.numH.Maximum = new decimal(new int[] {
-            4096,
-            0,
-            0,
-            0});
-            this.numH.Minimum = new decimal(new int[] {
-            480,
-            0,
-            0,
-            0});
-            this.numH.Name = "numH";
-            this.numH.Size = new System.Drawing.Size(75, 21);
-            this.numH.TabIndex = 1;
-            this.numH.Value = new decimal(new int[] {
-            480,
-            0,
-            0,
-            0});
-            this.numH.ValueChanged += new System.EventHandler(this.numH_ValueChanged);
-            // 
-            // numW
-            // 
-            this.numW.Location = new System.Drawing.Point(50, 20);
-            this.numW.Maximum = new decimal(new int[] {
-            8192,
-            0,
-            0,
-            0});
-            this.numW.Minimum = new decimal(new int[] {
-            640,
-            0,
-            0,
-            0});
-            this.numW.Name = "numW";
-            this.numW.Size = new System.Drawing.Size(75, 21);
-            this.numW.TabIndex = 0;
-            this.numW.Value = new decimal(new int[] {
-            640,
-            0,
-            0,
-            0});
-            this.numW.ValueChanged += new System.EventHandler(this.numW_ValueChanged);
             // 
             // cdlClearCol
             // 
@@ -468,7 +382,6 @@
             // 
             this.fraGeneral.Controls.Add(this.fraFind);
             this.fraGeneral.Controls.Add(this.fraLang);
-            this.fraGeneral.Controls.Add(this.fraSize);
             this.fraGeneral.Controls.Add(this.chkCustomCrates);
             this.fraGeneral.Controls.Add(this.chkDeleteInvalidEntries);
             this.fraGeneral.Controls.Add(this.chkPatchNSDSavesNSF);
@@ -486,7 +399,7 @@
             // 
             this.fraFind.Controls.Add(this.chkFindWrap);
             this.fraFind.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraFind.Location = new System.Drawing.Point(325, 22);
+            this.fraFind.Location = new System.Drawing.Point(183, 22);
             this.fraFind.Name = "fraFind";
             this.fraFind.Size = new System.Drawing.Size(177, 74);
             this.fraFind.TabIndex = 16;
@@ -539,9 +452,6 @@
             this.Name = "ConfigEditor";
             this.Size = new System.Drawing.Size(639, 418);
             this.fraLang.ResumeLayout(false);
-            this.fraSize.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numH)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numW)).EndInit();
             this.fraClearCol.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picClearCol)).EndInit();
             this.fraAnimGrid.ResumeLayout(false);
@@ -560,11 +470,6 @@
 
         private MetroFramework.Controls.MetroComboBox dpdLang;
         private System.Windows.Forms.GroupBox fraLang;
-        private System.Windows.Forms.GroupBox fraSize;
-        private System.Windows.Forms.Label lblH;
-        private System.Windows.Forms.Label lblW;
-        private DarkUI.Controls.DarkNumericUpDown numH;
-        private DarkUI.Controls.DarkNumericUpDown numW;
         private MetroFramework.Controls.MetroCheckBox chkNormalDisplay;
         private MetroFramework.Controls.MetroCheckBox chkCollisionDisplay;
         private MetroFramework.Controls.MetroCheckBox chkUseAnimLinks;

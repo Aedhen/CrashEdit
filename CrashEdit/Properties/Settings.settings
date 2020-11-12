@@ -5,12 +5,6 @@
     <Setting Name="Language" Type="System.String" Scope="User">
       <Value Profile="(Default)">en</Value>
     </Setting>
-    <Setting Name="DefaultFormW" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">747</Value>
-    </Setting>
-    <Setting Name="DefaultFormH" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">560</Value>
-    </Setting>
     <Setting Name="DisplayNormals" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
