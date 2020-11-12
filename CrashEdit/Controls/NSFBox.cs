@@ -6,6 +6,8 @@ using DarkUI.Forms;
 
 namespace CrashEdit
 {
+    using CrashEdit.Properties;
+
     public sealed class NSFBox : UserControl
     {
         private static ImageList imglist;
@@ -43,6 +45,7 @@ namespace CrashEdit
         }
 
         private List<TreeNode> searchresults;
+        private int nextFindIndex;
 
         private SplitContainer pnSplit;
         private TreeView trvMain;
@@ -53,6 +56,7 @@ namespace CrashEdit
             NSFController = new NSFController(nsf, gameversion);
 
             searchresults = new List<TreeNode>();
+            nextFindIndex = 0;
 
             NSFController.Node.Expand();
 
@@ -170,24 +174,36 @@ namespace CrashEdit
         {
             term = term.ToUpper();
             searchresults.Clear();
+            nextFindIndex = 0;
             foreach (TreeNode node in trvMain.Nodes)
             {
                 FindNode(term,node);
             }
+
             FindNext();
         }
 
         public void FindNext()
         {
-            if (searchresults.Count > 0)
+            if (nextFindIndex < searchresults.Count)
             {
-                trvMain.SelectedNode = searchresults[0];
-                searchresults.RemoveAt(0);
+                SetSelectedNodeToFindResult();
+            }
+            else if (Settings.Default.FindWrapAround && searchresults.Count > 0)
+            {
+                nextFindIndex = 0;
+                SetSelectedNodeToFindResult();
             }
             else
             {
                 DarkMessageBox.ShowInformation("No results found.", "Find");
             }
+        }
+
+        private void SetSelectedNodeToFindResult()
+        {
+            trvMain.SelectedNode = searchresults[nextFindIndex];
+            nextFindIndex++;
         }
 
         private void FindNode(string term,TreeNode node)

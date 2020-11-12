@@ -749,7 +749,7 @@
     <value>Display detailed collision type</value>
   </data>
   <data name="Config_cmdHelp" xml:space="preserve">
-    <value>Help</value>
+    <value>Shortcuts</value>
   </data>
   <data name="Config_cmdResetText" xml:space="preserve">
     <value>Are you sure you want to reset the settings?</value>

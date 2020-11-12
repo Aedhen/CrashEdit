@@ -11,7 +11,7 @@ namespace CrashEdit
     {
         public static readonly List<string> Languages = new List<string> { "en", "ja" };
 
-        public HelpWindow frmhelp = null;
+        public ShortcutsWindow frmShortcuts = null;
 
         public ConfigEditor()
         {
@@ -53,7 +53,7 @@ namespace CrashEdit
             chkAnimViewPanel.Checked = Settings.Default.AnimViewPanel;
             chkCustomCrates.Text = Resources.Config_chkCustomCrates;
             cmdReset.Text = Resources.Config_cmdReset;
-            cmdHelp.Text = Resources.Config_cmdHelp;
+            cmdShortcuts.Text = Resources.Config_cmdHelp;
         }
 
         private void dpdLang_SelectedIndexChanged(object sender, EventArgs e)
@@ -179,19 +179,20 @@ namespace CrashEdit
             Settings.Default.Save();
         }
 
-        private void CmdHelp_Click(object sender, EventArgs e)
+        private void cmdShortcuts_Click(object sender, EventArgs e)
         {
-            if (frmhelp == null || frmhelp.IsDisposed)
+            if (frmShortcuts == null || frmShortcuts.IsDisposed)
             {
-                frmhelp = new HelpWindow();
+                frmShortcuts = new ShortcutsWindow();
             }
-            if (!frmhelp.Visible)
+
+            if (!frmShortcuts.Visible)
             {
-                frmhelp.Show();
+                frmShortcuts.Show();
             }
             else
             {
-                frmhelp.Activate();
+                frmShortcuts.Activate();
             }
         }
 
@@ -204,6 +205,12 @@ namespace CrashEdit
         private void ChkAnimViewPanel_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.AnimViewPanel = chkAnimViewPanel.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkFindWrap_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.FindWrapAround = chkFindWrap.Checked;
             Settings.Default.Save();
         }
     }

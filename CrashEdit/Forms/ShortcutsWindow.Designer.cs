@@ -39,6 +39,7 @@
             this.lblLine = new DarkUI.Controls.DarkLabel();
             this.darkLabel10 = new DarkUI.Controls.DarkLabel();
             this.darkLabel11 = new DarkUI.Controls.DarkLabel();
+            this.darkLabel9 = new DarkUI.Controls.DarkLabel();
             this.SuspendLayout();
             // 
             // darkLabel1
@@ -46,7 +47,7 @@
             this.darkLabel1.AutoSize = true;
             this.darkLabel1.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.darkLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.darkLabel1.Location = new System.Drawing.Point(12, 22);
+            this.darkLabel1.Location = new System.Drawing.Point(12, 24);
             this.darkLabel1.Name = "darkLabel1";
             this.darkLabel1.Size = new System.Drawing.Size(243, 112);
             this.darkLabel1.TabIndex = 0;
@@ -69,7 +70,7 @@
             this.darkLabel3.AutoSize = true;
             this.darkLabel3.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.darkLabel3.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.darkLabel3.Location = new System.Drawing.Point(4, 150);
+            this.darkLabel3.Location = new System.Drawing.Point(4, 163);
             this.darkLabel3.Name = "darkLabel3";
             this.darkLabel3.Size = new System.Drawing.Size(96, 18);
             this.darkLabel3.TabIndex = 2;
@@ -80,7 +81,7 @@
             this.darkLabel4.AutoSize = true;
             this.darkLabel4.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.darkLabel4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.darkLabel4.Location = new System.Drawing.Point(12, 168);
+            this.darkLabel4.Location = new System.Drawing.Point(12, 182);
             this.darkLabel4.Name = "darkLabel4";
             this.darkLabel4.Size = new System.Drawing.Size(176, 80);
             this.darkLabel4.TabIndex = 3;
@@ -92,7 +93,7 @@
             this.darkLabel5.AutoSize = true;
             this.darkLabel5.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.darkLabel5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.darkLabel5.Location = new System.Drawing.Point(12, 282);
+            this.darkLabel5.Location = new System.Drawing.Point(12, 306);
             this.darkLabel5.Name = "darkLabel5";
             this.darkLabel5.Size = new System.Drawing.Size(240, 96);
             this.darkLabel5.TabIndex = 4;
@@ -104,7 +105,7 @@
             this.darkLabel6.AutoSize = true;
             this.darkLabel6.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.darkLabel6.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.darkLabel6.Location = new System.Drawing.Point(4, 264);
+            this.darkLabel6.Location = new System.Drawing.Point(4, 286);
             this.darkLabel6.Name = "darkLabel6";
             this.darkLabel6.Size = new System.Drawing.Size(131, 18);
             this.darkLabel6.TabIndex = 5;
@@ -115,7 +116,7 @@
             this.darkLabel7.AutoSize = true;
             this.darkLabel7.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.darkLabel7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.darkLabel7.Location = new System.Drawing.Point(165, 22);
+            this.darkLabel7.Location = new System.Drawing.Point(165, 24);
             this.darkLabel7.Name = "darkLabel7";
             this.darkLabel7.Size = new System.Drawing.Size(158, 64);
             this.darkLabel7.TabIndex = 6;
@@ -136,7 +137,7 @@
             // 
             this.lblLine.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblLine.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.lblLine.Location = new System.Drawing.Point(8, 94);
+            this.lblLine.Location = new System.Drawing.Point(8, 102);
             this.lblLine.Name = "lblLine";
             this.lblLine.Size = new System.Drawing.Size(312, 1);
             this.lblLine.TabIndex = 8;
@@ -146,7 +147,7 @@
             this.darkLabel10.AutoSize = true;
             this.darkLabel10.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.darkLabel10.ForeColor = System.Drawing.Color.MediumSeaGreen;
-            this.darkLabel10.Location = new System.Drawing.Point(4, 394);
+            this.darkLabel10.Location = new System.Drawing.Point(4, 427);
             this.darkLabel10.Name = "darkLabel10";
             this.darkLabel10.Size = new System.Drawing.Size(104, 18);
             this.darkLabel10.TabIndex = 9;
@@ -157,20 +158,33 @@
             this.darkLabel11.AutoSize = true;
             this.darkLabel11.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.darkLabel11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.darkLabel11.Location = new System.Drawing.Point(12, 412);
+            this.darkLabel11.Location = new System.Drawing.Point(12, 446);
             this.darkLabel11.Name = "darkLabel11";
-            this.darkLabel11.Size = new System.Drawing.Size(140, 128);
+            this.darkLabel11.Size = new System.Drawing.Size(140, 80);
             this.darkLabel11.TabIndex = 10;
             this.darkLabel11.Text = "Open (Ctrl + O)\r\nSave (Ctrl + Shift + S)\r\nPatch NSD (Ctrl + S)\r\nClose (Ctrl + Shi" +
-    "ft + C)\r\nFind (Ctrl + F)\r\nFind Next (F3)\r\nFind first node (Enter)\r\nPlay (F1)";
+    "ft + C)\r\nPlay (F1)";
             // 
-            // HelpWindow
+            // darkLabel9
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.darkLabel9.AutoSize = true;
+            this.darkLabel9.Font = new System.Drawing.Font("Arial", 9.75F);
+            this.darkLabel9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.darkLabel9.Location = new System.Drawing.Point(177, 446);
+            this.darkLabel9.Name = "darkLabel9";
+            this.darkLabel9.Size = new System.Drawing.Size(201, 64);
+            this.darkLabel9.TabIndex = 11;
+            this.darkLabel9.Text = "Focus Find input (Ctrl + F)\r\nWhile Find input focused:\r\n    Find / Next result (E" +
+    "nter or F3)\r\n    Refresh Find (Ctrl + Enter)";
+            // 
+            // ShortcutsWindow
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(329, 544);
+            this.ClientSize = new System.Drawing.Size(398, 545);
+            this.Controls.Add(this.darkLabel9);
             this.Controls.Add(this.darkLabel11);
             this.Controls.Add(this.darkLabel10);
             this.Controls.Add(this.lblLine);
@@ -207,5 +221,6 @@
         private DarkUI.Controls.DarkLabel lblLine;
         private DarkUI.Controls.DarkLabel darkLabel10;
         private DarkUI.Controls.DarkLabel darkLabel11;
+        private DarkUI.Controls.DarkLabel darkLabel9;
     }
 }

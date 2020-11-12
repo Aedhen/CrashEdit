@@ -119,7 +119,6 @@ namespace CrashEdit
 
             tbbClose = new ToolStripButton
             {
-                //Text = Resources.Toolbar_Close,
                 ToolTipText = "Close (Ctrl+Shift+C)",
                 ImageKey = "tb_close",
                 TextImageRelation = TextImageRelation.ImageAboveText
@@ -129,8 +128,7 @@ namespace CrashEdit
 
             tbbFind = new ToolStripButton
             {
-                //Text = Resources.Toolbar_Find,
-                ToolTipText = "Find (Ctrl+F / Enter)",
+                ToolTipText = "Find (Ctrl+F / Enter / Ctrl+Enter)",
                 ImageKey = "tb_find",
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
@@ -139,7 +137,6 @@ namespace CrashEdit
 
             tbbFindNext = new ToolStripButton
             {
-                //Text = Resources.Toolbar_FindNext,
                 ToolTipText = "Find Next (F3)",
                 ImageKey = "tb_findnext",
                 TextImageRelation = TextImageRelation.ImageAboveText
@@ -215,25 +212,12 @@ namespace CrashEdit
             tbbPlay.Click += new EventHandler(tbbPlay_Click);
             tbbPlay.Size = new Size(40, 40);
 
-            //txtInput = new MetroTextBox
-            //{
-            //    Location = new Point(120, 50),
-            //    Size = new Size(64, 20),
-            //    Style = MetroFramework.MetroColorStyle.Teal,
-            //    Theme = MetroFramework.MetroThemeStyle.Dark,
-            //    UseCustomBackColor = true,
-            //    BackColor = Color.FromArgb(35, 35, 38),
-            //    TextAlign = HorizontalAlignment.Center,
-            //    WaterMark = "Find",
-            //    WaterMarkColor = Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109))))),
-            //    WaterMarkFont = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Pixel)
-            //};
             txtInput = new ToolStripTextBox
             {
                 Size = new Size(64, 20),
                 BackColor = Color.FromArgb(35, 35, 38),
                 Text = "Find",
-                //Colo = Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109))))),
+                ToolTipText = "Find (Ctrl+F / Enter / Ctrl+Enter)",
                 Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Pixel)
             };
             txtInput.TextChanged += new EventHandler(txtInput_Change);
@@ -369,7 +353,7 @@ namespace CrashEdit
 
             Icon = OldResources.CBHacksIcon;
             Width = Settings.Default.DefaultFormW;
-            Height = Settings.Default.DefaultFormH;
+            Height = Settings.Default.DefaultFormH; 
             Load += new EventHandler(OldMainForm_Load);
             FormClosing += new FormClosingEventHandler(OldMainForm_FormClosing);
             Text = $"CrashEdit-tweaked v{Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
@@ -557,17 +541,26 @@ namespace CrashEdit
 
         void txtInput_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            if (e.KeyCode != Keys.Enter)
             {
-                e.Handled = true;
+                return;
+            }
+
+            e.Handled = true;
+            if (e.Control)
+            {
                 Find();
+            }
+            else
+            {
+                FindNext();
             }
         }
 
         private void txtInput_KeyPress(object sender, KeyPressEventArgs e)
         {
             // prevent beeping
-            if (e.KeyChar == (char)Keys.Enter || e.KeyChar == (char)Keys.Escape)
+            if (e.KeyChar == (char)Keys.Enter || e.KeyChar == (char)Keys.Escape || e.KeyChar == (char)Keys.LineFeed)
             {
                 e.Handled = true;
             }
@@ -1359,18 +1352,15 @@ namespace CrashEdit
             txtInput.Select();
             txtInput.SelectAll();
 
-            if (tbcTabs.SelectedTab != null)
-            {
-                NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
-                nsfbox.Find(Input);
-            }
-            changetext = false;
+            HandleNewFind();
         }
 
         public void FindShortcut()
         {
             txtInput.Select();
             txtInput.SelectAll();
+
+            txtInput.Focus();
         }
 
         public void FindNext()
@@ -1378,21 +1368,26 @@ namespace CrashEdit
             txtInput.Select();
             txtInput.SelectAll();
 
-            if (changetext == true)
+            if (changetext)
             {
-                if (tbcTabs.SelectedTab != null)
-                {
-                    NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
-                    nsfbox.Find(Input);
-                }
-                changetext = false;
-                return;
+                HandleNewFind();
             }
             else if (tbcTabs.SelectedTab != null)
             {
-                NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
-                nsfbox.FindNext();
+                var nsfBox = (NSFBox)tbcTabs.SelectedTab.Tag;
+                nsfBox.FindNext();
             }
+        }
+
+        private void HandleNewFind()
+        {
+            if (tbcTabs.SelectedTab != null)
+            {
+                var nsfBox = (NSFBox) tbcTabs.SelectedTab.Tag;
+                nsfBox.Find(Input);
+            }
+
+            changetext = false;
         }
 
         void AddDirectoryToISO(CDBuilder fs, string prefix, DirectoryInfo dir)

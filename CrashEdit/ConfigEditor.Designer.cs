@@ -53,10 +53,12 @@
             this.chkDetailedCollision = new MetroFramework.Controls.MetroCheckBox();
             this.tglKeyBinds = new MetroFramework.Controls.MetroToggle();
             this.fraKeyBinds = new System.Windows.Forms.GroupBox();
-            this.cmdHelp = new MetroFramework.Controls.MetroButton();
+            this.cmdShortcuts = new MetroFramework.Controls.MetroButton();
             this.chkCustomCrates = new MetroFramework.Controls.MetroCheckBox();
             this.chkAnimViewPanel = new MetroFramework.Controls.MetroCheckBox();
             this.fraGeneral = new System.Windows.Forms.GroupBox();
+            this.fraFind = new System.Windows.Forms.GroupBox();
+            this.chkFindWrap = new MetroFramework.Controls.MetroCheckBox();
             this.fra3dViewer = new System.Windows.Forms.GroupBox();
             this.fraLang.SuspendLayout();
             this.fraSize.SuspendLayout();
@@ -68,6 +70,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numAnimGrid)).BeginInit();
             this.fraKeyBinds.SuspendLayout();
             this.fraGeneral.SuspendLayout();
+            this.fraFind.SuspendLayout();
             this.fra3dViewer.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -116,7 +119,6 @@
             this.fraSize.TabIndex = 1;
             this.fraSize.TabStop = false;
             this.fraSize.Text = "Default Window Size";
-            this.fraSize.Visible = false;
             // 
             // lblH
             // 
@@ -417,23 +419,23 @@
             this.fraKeyBinds.TabStop = false;
             this.fraKeyBinds.Text = "Alternate Keybindings";
             // 
-            // cmdHelp
+            // cmdShortcuts
             // 
-            this.cmdHelp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.cmdHelp.FontSize = MetroFramework.MetroButtonSize.Medium;
-            this.cmdHelp.FontWeight = MetroFramework.MetroButtonWeight.Regular;
-            this.cmdHelp.ForeColor = System.Drawing.SystemColors.InactiveCaption;
-            this.cmdHelp.Location = new System.Drawing.Point(530, 12);
-            this.cmdHelp.Name = "cmdHelp";
-            this.cmdHelp.Size = new System.Drawing.Size(99, 25);
-            this.cmdHelp.Style = MetroFramework.MetroColorStyle.Blue;
-            this.cmdHelp.TabIndex = 14;
-            this.cmdHelp.Text = "Shortcuts";
-            this.cmdHelp.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.cmdHelp.UseCustomBackColor = true;
-            this.cmdHelp.UseCustomForeColor = true;
-            this.cmdHelp.UseSelectable = true;
-            this.cmdHelp.Click += new System.EventHandler(this.CmdHelp_Click);
+            this.cmdShortcuts.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.cmdShortcuts.FontSize = MetroFramework.MetroButtonSize.Medium;
+            this.cmdShortcuts.FontWeight = MetroFramework.MetroButtonWeight.Regular;
+            this.cmdShortcuts.ForeColor = System.Drawing.SystemColors.InactiveCaption;
+            this.cmdShortcuts.Location = new System.Drawing.Point(530, 12);
+            this.cmdShortcuts.Name = "cmdShortcuts";
+            this.cmdShortcuts.Size = new System.Drawing.Size(99, 25);
+            this.cmdShortcuts.Style = MetroFramework.MetroColorStyle.Blue;
+            this.cmdShortcuts.TabIndex = 14;
+            this.cmdShortcuts.Text = "Shortcuts";
+            this.cmdShortcuts.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.cmdShortcuts.UseCustomBackColor = true;
+            this.cmdShortcuts.UseCustomForeColor = true;
+            this.cmdShortcuts.UseSelectable = true;
+            this.cmdShortcuts.Click += new System.EventHandler(this.cmdShortcuts_Click);
             // 
             // chkCustomCrates
             // 
@@ -464,6 +466,7 @@
             // 
             // fraGeneral
             // 
+            this.fraGeneral.Controls.Add(this.fraFind);
             this.fraGeneral.Controls.Add(this.fraLang);
             this.fraGeneral.Controls.Add(this.fraSize);
             this.fraGeneral.Controls.Add(this.chkCustomCrates);
@@ -478,6 +481,31 @@
             this.fraGeneral.TabIndex = 18;
             this.fraGeneral.TabStop = false;
             this.fraGeneral.Text = "General";
+            // 
+            // fraFind
+            // 
+            this.fraFind.Controls.Add(this.chkFindWrap);
+            this.fraFind.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraFind.Location = new System.Drawing.Point(325, 22);
+            this.fraFind.Name = "fraFind";
+            this.fraFind.Size = new System.Drawing.Size(177, 74);
+            this.fraFind.TabIndex = 16;
+            this.fraFind.TabStop = false;
+            this.fraFind.Text = "Find";
+            // 
+            // chkFindWrap
+            // 
+            this.chkFindWrap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.chkFindWrap.ForeColor = System.Drawing.Color.Gainsboro;
+            this.chkFindWrap.Location = new System.Drawing.Point(6, 20);
+            this.chkFindWrap.Name = "chkFindWrap";
+            this.chkFindWrap.Size = new System.Drawing.Size(104, 18);
+            this.chkFindWrap.TabIndex = 0;
+            this.chkFindWrap.Text = "Wrap around";
+            this.chkFindWrap.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.chkFindWrap.UseCustomBackColor = true;
+            this.chkFindWrap.UseSelectable = true;
+            this.chkFindWrap.CheckedChanged += new System.EventHandler(this.chkFindWrap_CheckedChanged);
             // 
             // fra3dViewer
             // 
@@ -505,7 +533,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.Controls.Add(this.fra3dViewer);
             this.Controls.Add(this.fraGeneral);
-            this.Controls.Add(this.cmdHelp);
+            this.Controls.Add(this.cmdShortcuts);
             this.Controls.Add(this.cmdReset);
             this.ForeColor = System.Drawing.SystemColors.Window;
             this.Name = "ConfigEditor";
@@ -522,6 +550,7 @@
             this.fraKeyBinds.ResumeLayout(false);
             this.fraKeyBinds.PerformLayout();
             this.fraGeneral.ResumeLayout(false);
+            this.fraFind.ResumeLayout(false);
             this.fra3dViewer.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -553,11 +582,13 @@
         private MetroFramework.Controls.MetroButton cmdReset;
         private MetroFramework.Controls.MetroCheckBox chkDetailedCollision;
         private System.Windows.Forms.GroupBox fraKeyBinds;
-        private MetroFramework.Controls.MetroButton cmdHelp;
+        private MetroFramework.Controls.MetroButton cmdShortcuts;
         private MetroFramework.Controls.MetroToggle tglKeyBinds;
         private MetroFramework.Controls.MetroCheckBox chkCustomCrates;
         private MetroFramework.Controls.MetroCheckBox chkAnimViewPanel;
         private System.Windows.Forms.GroupBox fraGeneral;
         private System.Windows.Forms.GroupBox fra3dViewer;
+        private System.Windows.Forms.GroupBox fraFind;
+        private MetroFramework.Controls.MetroCheckBox chkFindWrap;
     }
 }
