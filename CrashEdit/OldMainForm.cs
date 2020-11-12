@@ -69,7 +69,8 @@ namespace CrashEdit
         private MetroTabControl tbcTabs;
         private GameVersionForm dlgGameVersion;
         private ToolStripButton tbbPAL;
-        private MetroTextBox txtInput;
+        //private MetroTextBox txtInput;
+        private ToolStripTextBox txtInput;
 
         private FolderBrowserDialog dlgMakeBINDir = new FolderBrowserDialog();
         private SaveFileDialog dlgMakeBINFile = new SaveFileDialog();
@@ -88,7 +89,7 @@ namespace CrashEdit
         {
             tbbOpen = new ToolStripButton
             {
-                Text = Resources.Toolbar_Open,
+                //Text = Resources.Toolbar_Open,
                 ToolTipText = "Open (Ctrl+O)",
                 ImageKey = "tb_open",
                 TextImageRelation = TextImageRelation.ImageAboveText
@@ -98,7 +99,7 @@ namespace CrashEdit
 
             tbbSave = new ToolStripButton
             {
-                Text = Resources.Toolbar_Save,
+                //Text = Resources.Toolbar_Save,
                 ToolTipText = "Save (Ctrl+Shift+S)",
                 ImageKey = "tb_save",
                 TextImageRelation = TextImageRelation.ImageAboveText
@@ -108,7 +109,7 @@ namespace CrashEdit
 
             tbbPatchNSD = new ToolStripButton
             {
-                Text = Resources.Toolbar_PatchNSD,
+                //Text = Resources.Toolbar_PatchNSD,
                 ToolTipText = "Patch NSD (Ctrl+S)",
                 ImageKey = "tb_patchnsd",
                 TextImageRelation = TextImageRelation.ImageAboveText
@@ -118,7 +119,7 @@ namespace CrashEdit
 
             tbbClose = new ToolStripButton
             {
-                Text = Resources.Toolbar_Close,
+                //Text = Resources.Toolbar_Close,
                 ToolTipText = "Close (Ctrl+Shift+C)",
                 ImageKey = "tb_close",
                 TextImageRelation = TextImageRelation.ImageAboveText
@@ -128,7 +129,7 @@ namespace CrashEdit
 
             tbbFind = new ToolStripButton
             {
-                Text = Resources.Toolbar_Find,
+                //Text = Resources.Toolbar_Find,
                 ToolTipText = "Find (Ctrl+F / Enter)",
                 ImageKey = "tb_find",
                 TextImageRelation = TextImageRelation.ImageAboveText
@@ -138,7 +139,7 @@ namespace CrashEdit
 
             tbbFindNext = new ToolStripButton
             {
-                Text = Resources.Toolbar_FindNext,
+                //Text = Resources.Toolbar_FindNext,
                 ToolTipText = "Find Next (F3)",
                 ImageKey = "tb_findnext",
                 TextImageRelation = TextImageRelation.ImageAboveText
@@ -214,18 +215,26 @@ namespace CrashEdit
             tbbPlay.Click += new EventHandler(tbbPlay_Click);
             tbbPlay.Size = new Size(40, 40);
 
-            txtInput = new MetroTextBox
+            //txtInput = new MetroTextBox
+            //{
+            //    Location = new Point(120, 50),
+            //    Size = new Size(64, 20),
+            //    Style = MetroFramework.MetroColorStyle.Teal,
+            //    Theme = MetroFramework.MetroThemeStyle.Dark,
+            //    UseCustomBackColor = true,
+            //    BackColor = Color.FromArgb(35, 35, 38),
+            //    TextAlign = HorizontalAlignment.Center,
+            //    WaterMark = "Find",
+            //    WaterMarkColor = Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109))))),
+            //    WaterMarkFont = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Pixel)
+            //};
+            txtInput = new ToolStripTextBox
             {
-                Location = new Point(221, 19),
                 Size = new Size(64, 20),
-                Style = MetroFramework.MetroColorStyle.Teal,
-                Theme = MetroFramework.MetroThemeStyle.Dark,
-                UseCustomBackColor = true,
                 BackColor = Color.FromArgb(35, 35, 38),
-                TextAlign = HorizontalAlignment.Center,
-                WaterMark = "Find",
-                WaterMarkColor = Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109))))),
-                WaterMarkFont = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Pixel)
+                Text = "Find",
+                //Colo = Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109))))),
+                Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Pixel)
             };
             txtInput.TextChanged += new EventHandler(txtInput_Change);
             txtInput.Click += new EventHandler(txtInput_Click);
@@ -246,6 +255,7 @@ namespace CrashEdit
             tsToolbar.Items.Add(new ToolStripSeparator());
             tsToolbar.Items.Add(tbbFind);
             tsToolbar.Items.Add(tbbFindNext);
+            tsToolbar.Items.Add(txtInput);
             tsToolbar.Items.Add(new ToolStripSeparator());
             tsToolbar.Items.Add(tbbExtra);
             tsToolbar.Items.Add(tbbPAL);
@@ -363,7 +373,7 @@ namespace CrashEdit
             Load += new EventHandler(OldMainForm_Load);
             FormClosing += new FormClosingEventHandler(OldMainForm_FormClosing);
             Text = $"CrashEdit-tweaked v{Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
-            Controls.Add(txtInput);
+            //Controls.Add(txtInput);
             Controls.Add(tbcTabs);
             Controls.Add(tsToolbar);
             Controls.Add(msMenu);
