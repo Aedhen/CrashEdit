@@ -41,6 +41,7 @@ namespace CrashEdit
             UpdateSubtype();
             UpdateSettings();
             UpdateID();
+            InitDarkness();
             positionindex = 0;
             victimindex = 0;
             loadlistarowindex = 0;
@@ -2110,6 +2111,25 @@ namespace CrashEdit
         private void numZMod_ValueChanged(object sender, EventArgs e)
         {
             entity.ZMod = (int)numZMod.Value;
+        }
+
+        private void chkDarkness_CheckedChanged(object sender, EventArgs e)
+        {
+            entity.Darkness = chkDarkness.Checked;
+        }
+
+        private void InitDarkness()
+        {
+            if (entity.Darkness.HasValue)
+            {
+                chkDarkness.Enabled = true;
+                chkDarkness.Checked = entity.Darkness.Value;
+            }
+            else
+            {
+                chkDarkness.Enabled = false;
+                chkDarkness.Checked = false;
+            }
         }
 
         private void UpdateFOV()

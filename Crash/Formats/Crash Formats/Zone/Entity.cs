@@ -112,6 +112,8 @@ namespace Crash
         private int? cameraindex = null;
         [EntityPropertyField(0x174)]
         private int? camerasubindex = null;
+        [EntityPropertyField(0x185)]
+        private EntityUInt32Property darkness = null;
         [EntityPropertyField(0x208)]
         private EntityT4Property loadlista = null;
         [EntityPropertyField(0x209)]
@@ -277,6 +279,50 @@ namespace Crash
         {
             get => camerasubindex;
             set => camerasubindex = value;
+        }
+
+        public bool? Darkness
+        {
+            get
+            {
+                var residual = GetDarknessResidualValue();
+                if (residual == null)
+                {
+                    return null;
+                }
+
+                return residual.Value == 4;
+            }
+            set
+            {
+                if (!value.HasValue)
+                {
+                    return;
+                }
+
+                var darknessValue = GetDarknessResidualValue();
+                if (!darknessValue.HasValue)
+                {
+                    return;
+                }
+
+                if (value.Value)
+                {
+                    darknessValue += 4;
+                }
+
+                darkness.Rows[0].Values[0] = darknessValue.Value;
+            }
+        }
+
+        private uint? GetDarknessResidualValue()
+        {
+            if (darkness?.Rows == null || darkness.RowCount == 0 || darkness.Rows[0].Values == null)
+            {
+                return null;
+            }
+
+            return darkness.Rows[0].Values[0] % 10;
         }
 
         public EntityT4Property SLST
