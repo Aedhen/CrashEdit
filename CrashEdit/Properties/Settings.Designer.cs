@@ -250,5 +250,17 @@ namespace CrashEdit.Properties {
                 this["FindWrapAround"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ExternalToolDir {
+            get {
+                return ((string)(this["ExternalToolDir"]));
+            }
+            set {
+                this["ExternalToolDir"] = value;
+            }
+        }
     }
 }

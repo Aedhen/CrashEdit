@@ -196,5 +196,11 @@ namespace CrashEdit
             Settings.Default.FindWrapAround = chkFindWrap.Checked;
             Settings.Default.Save();
         }
+
+        private void txbExternalToolsDir_KeyUp(object sender, EventArgs e)
+        {
+            Settings.Default.ExternalToolDir = txbExternalToolsDir.Text;
+            Settings.Default.Save();
+        }
     }
 }

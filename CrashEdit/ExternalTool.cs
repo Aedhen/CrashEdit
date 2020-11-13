@@ -3,6 +3,10 @@ using System.Diagnostics;
 
 namespace CrashEdit
 {
+    using System;
+    using CrashEdit.Properties;
+    using DarkUI.Forms;
+
     public static class ExternalTool
     {
         private static string FindEXEInDir(string name, DirectoryInfo dir)
@@ -33,9 +37,23 @@ namespace CrashEdit
 
         public static string FindEXE(string name)
         {
-            var cePath = System.Reflection.Assembly.GetEntryAssembly().Location;
-            var ceDir = Path.GetDirectoryName(cePath);
-            var dir = new DirectoryInfo(ceDir);
+            DirectoryInfo dir = null;
+            if (!string.IsNullOrEmpty(Settings.Default.ExternalToolDir))
+            {
+                try
+                {
+                    dir = GetDirectoryInfo(Settings.Default.ExternalToolDir);
+                }
+                catch (Exception ex)
+                {
+                    DarkMessageBox.ShowInformation("ExternalTools path invalid. Using CrashEdit directory.", "Find");
+                }
+            }
+
+            if (dir == null)
+            {
+                dir = GetDirectoryInfo(System.Reflection.Assembly.GetEntryAssembly().Location);
+            }
 
             var result = FindEXEInDir(name, dir);
             if (result != null)
@@ -61,6 +79,12 @@ namespace CrashEdit
                 proc.WaitForExit();
                 return proc.ExitCode;
             }
+        }
+
+        private static DirectoryInfo GetDirectoryInfo(string path)
+        {
+            var ceDir = Path.GetDirectoryName(path);
+            return new DirectoryInfo(ceDir);
         }
     }
 }
