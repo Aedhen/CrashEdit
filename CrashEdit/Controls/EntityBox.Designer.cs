@@ -349,7 +349,7 @@ namespace CrashEdit
             this.tbcTabs.FontWeight = MetroFramework.MetroTabControlWeight.Regular;
             this.tbcTabs.Location = new System.Drawing.Point(0, 0);
             this.tbcTabs.Name = "tbcTabs";
-            this.tbcTabs.SelectedIndex = 2;
+            this.tbcTabs.SelectedIndex = 0;
             this.tbcTabs.Size = new System.Drawing.Size(2000, 1837);
             this.tbcTabs.Style = MetroFramework.MetroColorStyle.Teal;
             this.tbcTabs.TabIndex = 0;

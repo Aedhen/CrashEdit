@@ -41,7 +41,6 @@ namespace CrashEdit
             UpdateSubtype();
             UpdateSettings();
             UpdateID();
-            InitDarkness();
             positionindex = 0;
             victimindex = 0;
             loadlistarowindex = 0;
@@ -1554,6 +1553,7 @@ namespace CrashEdit
             UpdateAvgDist();
             UpdateNeighbors();
             UpdateFOV();
+            InitDarkness();
             tabCamera.Enter -= tabCamera_Enter;
         }
 
