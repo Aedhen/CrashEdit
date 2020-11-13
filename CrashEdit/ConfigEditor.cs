@@ -49,6 +49,7 @@ namespace CrashEdit
             chkCustomCrates.Text = Resources.Config_chkCustomCrates;
             cmdReset.Text = Resources.Config_cmdReset;
             cmdShortcuts.Text = Resources.Config_cmdHelp;
+            txbExternalToolsDir.Text = Settings.Default.ExternalToolDir;
         }
 
         private void dpdLang_SelectedIndexChanged(object sender, EventArgs e)
