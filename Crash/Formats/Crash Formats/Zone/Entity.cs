@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 namespace Crash
 {
+    using System.Linq;
+
     public sealed class Entity
     {
         private static Dictionary<short,FieldInfo> propertyfields;
@@ -285,13 +287,13 @@ namespace Crash
         {
             get
             {
-                var residual = GetDarknessResidualValue();
-                if (residual == null)
+                var darknessBytes = GetDarknessBytes();
+                if (darknessBytes == null)
                 {
                     return null;
                 }
 
-                return residual.Value == 4;
+                return (darknessBytes[0] & 0x0F) == 4;
             }
             set
             {
@@ -300,29 +302,50 @@ namespace Crash
                     return;
                 }
 
-                var darknessValue = GetDarknessResidualValue();
-                if (!darknessValue.HasValue)
+                var darknessBytes = GetDarknessBytes();
+                if (darknessBytes == null)
                 {
                     return;
                 }
 
-                if (value.Value)
+                var row = darkness.Rows.FirstOrDefault(x => x.MetaValue == 0);
+                if (row == null)
                 {
-                    darknessValue += 4;
+                    return;
                 }
 
-                darkness.Rows[0].Values[0] = darknessValue.Value;
+                for (var i = 0; i < row.Values.Count; i++)
+                {
+                    darknessBytes = BitConverter.GetBytes(row.Values[i]);
+                    if (value.Value && (darknessBytes[0] & 0x0F) != 4)
+                    {
+                        darknessBytes[0] += 4;
+                    }
+                    else if (!value.Value && (darknessBytes[0] & 0x0F) == 4)
+                    {
+                        darknessBytes[0] -= 4;
+                    }
+
+                    row.Values[i] = BitConverter.ToUInt32(darknessBytes, 0);
+                }
             }
         }
 
-        private uint? GetDarknessResidualValue()
+        private byte[] GetDarknessBytes()
         {
-            if (darkness?.Rows == null || darkness.RowCount == 0 || darkness.Rows[0].Values == null)
+            if (darkness?.Rows == null || darkness.RowCount == 0)
             {
                 return null;
             }
 
-            return darkness.Rows[0].Values[0] % 10;
+            var row = darkness.Rows.FirstOrDefault(x => x.MetaValue == 0);
+            if (row?.Values == null || !row.Values.Any())
+            {
+                return null;
+            }
+
+            var bytes = BitConverter.GetBytes(row.Values.First());
+            return bytes;
         }
 
         public EntityT4Property SLST
