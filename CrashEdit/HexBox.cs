@@ -357,43 +357,42 @@ namespace CrashEdit
             format.LineAlignment = StringAlignment.Center;
             selformat.Alignment = StringAlignment.Center;
             selformat.LineAlignment = StringAlignment.Center;
-            int hstep = (Width - 1) / 16;
-            int vstep = (Height - 1) / 16;
-            int width = hstep * 16;
-            int height = vstep * 16;
+            int hstep = (Width - 1) / 17;
+            int vstep = (Height - 1) / 17;
+            int width = hstep * 17;
+            int height = vstep * 17;
             int xsel = position % 16;
             int ysel = position / 16;
             e.Graphics.FillRectangle(borderbrush,0,0,width + 1,height + 1);
-            for (int y = 0;y < 16;y++)
+
+            DrawXHeaders(e, hstep, vstep, font, selbrush, format);
+
+            for (int y = 0; y < 16; y++)
             {
-                for (int x = 0;x < 16;x++)
+                DrawYHeader(e, vstep, y, hstep, font, selbrush, format);
+
+                for (int x = 0; x < 16; x++)
                 {
-                    int i = x + (offset + y) * 16;
+                    var dataIndex = x + (offset + y) * 16;
+                    string text;
                     Font curfont;
                     Brush curbrush;
                     Brush curbackbrush;
                     StringFormat curformat;
                     Rectangle rect = new Rectangle
                     {
-                        X = hstep * x + 1,
-                        Y = vstep * y + 1,
+                        X = hstep * (x + 1) + 1,
+                        Y = vstep * (y + 1) + 1,
                         Width = hstep - 1,
                         Height = vstep - 1
                     };
-                    string text;
-                    if (eidview && x % 4 == 0 && i + 3 < Data.Length && (Data[i] & 1) != 0 && (Data[i + 3] & 128) == 0)
+
+                    if (HandleEidView(e, dataIndex, font, selbrush, eidbackbrush, format, rect, hstep, ref x))
                     {
-                        curfont = font;
-                        curbrush = selbrush;
-                        curbackbrush = eidbackbrush;
-                        curformat = format;
-                        rect.Width = hstep * 4 - 1;
-                        int eid = BitConv.FromInt32(Data,i);
-                        e.Graphics.FillRectangle(curbackbrush,rect);
-                        e.Graphics.DrawString(Entry.EIDToEName(eid),curfont,curbrush,rect,curformat);
-                        x += 3;
                         continue;
                     }
+
+                    // Selected square
                     if (x == xsel && y + offset == ysel && x + y * 16 < Data.Length)
                     {
                         curfont = selfont;
@@ -402,7 +401,7 @@ namespace CrashEdit
                         if (input == null)
                         {
                             curbackbrush = Focused ? selbackbrush : deadselbackbrush;
-                            text = Data[x + (offset + y) * 16].ToString("X2");
+                            text = Data[dataIndex].ToString("X2");
                         }
                         else
                         {
@@ -410,20 +409,21 @@ namespace CrashEdit
                             text = ((int)input).ToString("X");
                         }
                     }
-                    else if (x + (offset + y) * 16 < Data.Length)
+                    // Default, non-selected square
+                    else if (dataIndex < Data.Length)
                     {
                         curfont = font;
                         curbrush = brush;
                         if (viewbit != 8)
                         {
-                            curbackbrush = ((Data[x + (offset + y) * 16] & 1 << viewbit) != 0) ? bithibackbrush : backbrush;
+                            curbackbrush = ((Data[dataIndex] & 1 << viewbit) != 0) ? bithibackbrush : backbrush;
                         }
                         else
                         {
-                            curbackbrush = (Data[x + (offset + y) * 16] != 0) ? hibackbrush : backbrush;
+                            curbackbrush = (Data[dataIndex] != 0) ? hibackbrush : backbrush;
                         }
                         curformat = format;
-                        text = Data[x + (offset + y) * 16].ToString("X2");
+                        text = Data[dataIndex].ToString("X2");
                     }
                     else
                     {
@@ -433,12 +433,56 @@ namespace CrashEdit
                         curformat = null;
                         text = "";
                     }
+
                     e.Graphics.FillRectangle(curbackbrush,rect);
-                    if (x + (offset + y) * 16 < Data.Length)
+                    if (dataIndex < Data.Length)
                     {
-                        e.Graphics.DrawString(text,curfont,curbrush,rect,curformat);
+                        e.Graphics.DrawString(text, curfont, curbrush, rect, curformat);
                     }
                 }
+            }
+        }
+
+        private bool HandleEidView(PaintEventArgs e, int dataIndex, Font font, Brush fontBrush, Brush eidBackBrush,
+            StringFormat format, Rectangle rect, int hstep, ref int x)
+        {
+            if (!eidview || x % 4 != 0 || dataIndex + 3 >= Data.Length || (Data[dataIndex] & 1) == 0 || (Data[dataIndex + 3] & 128) != 0)
+            {
+                return false;
+            }
+
+            rect.Width = hstep * 4 - 1;
+            int eid = BitConv.FromInt32(Data, dataIndex);
+            e.Graphics.FillRectangle(eidBackBrush, rect);
+            e.Graphics.DrawString(Entry.EIDToEName(eid), font, fontBrush, rect, format);
+            x += 3;
+            return true;
+        }
+
+        private void DrawYHeader(PaintEventArgs e, int vstep, int y, int hstep, Font font, Brush selbrush, StringFormat format)
+        {
+            Rectangle yHeaderRect = new Rectangle
+            {
+                X = 0,
+                Y = vstep * (y + 1),
+                Width = hstep - 1,
+                Height = vstep - 1
+            };
+            e.Graphics.DrawString(((offset + y) * 16).ToString("X4"), font, selbrush, yHeaderRect, format);
+        }
+
+        private static void DrawXHeaders(PaintEventArgs e, int hstep, int vstep, Font font, Brush selbrush, StringFormat format)
+        {
+            for (int x = 0; x < 16; x++)
+            {
+                Rectangle xHeaderRect = new Rectangle
+                {
+                    X = hstep * (x + 1),
+                    Y = 0,
+                    Width = hstep - 1,
+                    Height = vstep - 1
+                };
+                e.Graphics.DrawString(x.ToString("X2"), font, selbrush, xHeaderRect, format);
             }
         }
     }
