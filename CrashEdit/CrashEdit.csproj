@@ -100,6 +100,12 @@
     <Compile Include="Controls\FrameBox.Designer.cs">
       <DependentUpon>FrameBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\NsdBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\NsdBox.Designer.cs">
+      <DependentUpon>NsdBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PaletteEntryBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -285,6 +291,8 @@
     </Compile>
     <Compile Include="FileFilters.cs" />
     <Compile Include="..\Version.cs" />
+    <Compile Include="Helpers\NsdHelper.cs" />
+    <Compile Include="Helpers\NsfHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FileUtil.cs" />
     <Compile Include="Forms\InputWindow.cs">
@@ -377,6 +385,9 @@
     <EmbeddedResource Include="Controls\Crash3AnimationSelector.resx">
       <DependentUpon>Crash3AnimationSelector.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\NsdBox.resx">
+      <DependentUpon>NsdBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\NSFBox.resx">
       <DependentUpon>NSFBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -452,6 +463,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -554,4 +566,5 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
 </Project>

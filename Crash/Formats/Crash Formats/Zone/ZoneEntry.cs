@@ -42,6 +42,42 @@ namespace Crash
             set => BitConv.ToInt32(Header,0x190,value);
         }
 
+        public int XOffset
+        {
+            get => BitConv.FromInt32(Layout, 0);
+            set => BitConv.ToInt32(Layout, 0, value);
+        }
+
+        public int YOffset
+        {
+            get => BitConv.FromInt32(Layout, 4);
+            set => BitConv.ToInt32(Layout, 4, value);
+        }
+
+        public int ZOffset
+        {
+            get => BitConv.FromInt32(Layout, 8);
+            set => BitConv.ToInt32(Layout, 8, value);
+        }
+
+        public int Width
+        {
+            get => BitConv.FromInt32(Layout, 12);
+            set => BitConv.ToInt32(Layout, 12, value);
+        }
+
+        public int Height
+        {
+            get => BitConv.FromInt32(Layout, 16);
+            set => BitConv.ToInt32(Layout, 16, value);
+        }
+
+        public int Depth
+        {
+            get => BitConv.FromInt32(Layout, 20);
+            set => BitConv.ToInt32(Layout, 20, value);
+        }
+
         public override UnprocessedEntry Unprocess()
         {
             byte[][] items = new byte [2 + entities.Count][];

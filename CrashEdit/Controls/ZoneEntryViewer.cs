@@ -58,13 +58,13 @@ namespace CrashEdit
         {
             get
             {
-                int xoffset = BitConv.FromInt32(entry.Layout, 0);
-                int yoffset = BitConv.FromInt32(entry.Layout, 4);
-                int zoffset = BitConv.FromInt32(entry.Layout, 8);
+                int xoffset = entry.XOffset;
+                int yoffset = entry.YOffset;
+                int zoffset = entry.ZOffset;
                 yield return new Position(xoffset, yoffset, zoffset);
-                int x2 = BitConv.FromInt32(entry.Layout, 12);
-                int y2 = BitConv.FromInt32(entry.Layout, 16);
-                int z2 = BitConv.FromInt32(entry.Layout, 20);
+                int x2 = entry.Width;
+                int y2 = entry.Height;
+                int z2 = entry.Depth;
                 yield return new Position(x2 + xoffset, y2 + yoffset, z2 + zoffset);
                 foreach (Entity entity in entry.Entities)
                 {

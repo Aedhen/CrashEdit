@@ -3,7 +3,9 @@ using System.Collections.Generic;
 
 namespace Crash
 {
-    public sealed class NSD
+    using Crash.Formats.Crash_Formats.NSD;
+
+    public sealed class NSD : NsdBase
     {
         public static NSD Load(byte[] data)
         {
@@ -148,7 +150,7 @@ namespace Crash
         public IList<NSDSpawnPoint> Spawns => spawns;
         public byte[] ImageData { get; }
 
-        public byte[] Save()
+        public override byte[] Save()
         {
             int entrycount = Index.Count;
             int spawncount = spawns.Count;

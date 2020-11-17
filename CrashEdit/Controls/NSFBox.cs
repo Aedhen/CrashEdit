@@ -6,6 +6,8 @@ using DarkUI.Forms;
 
 namespace CrashEdit
 {
+    using Crash.Formats.Crash_Formats.NSD;
+    using CrashEdit.Helpers;
     using CrashEdit.Properties;
 
     public sealed class NSFBox : UserControl
@@ -50,10 +52,19 @@ namespace CrashEdit
         private SplitContainer pnSplit;
         private TreeView trvMain;
 
-        public NSFBox(NSF nsf, GameVersion gameversion)
+        public NSFBox(NSF nsf, GameVersion gameversion, string filename = null)
         {
             NSF = nsf;
-            NSFController = new NSFController(nsf, gameversion);
+            NSFController = new NSFController(nsf, gameversion, filename);
+
+            if (!string.IsNullOrEmpty(filename))
+            {
+                var nsdFileName = NsdHelper.GetNsdFilename(filename);
+                if (nsdFileName != null)
+                {
+                    NSD = NsdHelper.LoadNsdFile(nsdFileName, true, gameversion);
+                }
+            }
 
             searchresults = new List<TreeNode>();
             nextFindIndex = 0;
@@ -71,6 +82,7 @@ namespace CrashEdit
                 BackColor = Color.FromArgb(38, 38, 38),
                 ForeColor = Color.FromArgb(200, 200, 200)
             };
+
             trvMain.Nodes.Add(NSFController.Node);
             trvMain.AfterSelect += new TreeViewEventHandler(trvMain_AfterSelect);
             trvMain.ItemDrag += new ItemDragEventHandler(trvMain_ItemDrag);
@@ -86,6 +98,8 @@ namespace CrashEdit
 
         public NSF NSF { get; }
         public NSFController NSFController { get; }
+
+        public NsdBase NSD { get; }
 
         private void trvMain_AfterSelect(object sender,TreeViewEventArgs e)
         {

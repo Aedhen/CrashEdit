@@ -3,7 +3,9 @@ using System.Collections.Generic;
 
 namespace Crash
 {
-    public sealed class ProtoNSD
+    using Crash.Formats.Crash_Formats.NSD;
+
+    public sealed class ProtoNSD : NsdBase
     {
         public static ProtoNSD Load(byte[] data)
         {
@@ -57,7 +59,7 @@ namespace Crash
         public int ChunkCount { get; set; }
         public IList<NSDLink> Index { get; set; }
 
-        public byte[] Save()
+        public override byte[] Save()
         {
             int entrycount = Index.Count;
             byte[] result = new byte [0x408+8*entrycount];

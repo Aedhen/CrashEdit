@@ -3,7 +3,9 @@ using System.Collections.Generic;
 
 namespace Crash
 {
-    public sealed class OldNSD
+    using Crash.Formats.Crash_Formats.NSD;
+
+    public sealed class OldNSD : NsdBase
     {
         public static OldNSD Load(byte[] data)
         {
@@ -123,7 +125,7 @@ namespace Crash
         public int[] GOOLMap { get; }
         public byte[] ExtraData { get; }
 
-        public byte[] Save()
+        public override byte[] Save()
         {
             int entrycount = Index.Count;
             byte[] result = new byte [0x634+8*entrycount + ExtraData.Length];

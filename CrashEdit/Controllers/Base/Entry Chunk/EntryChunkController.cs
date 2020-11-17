@@ -7,7 +7,7 @@ namespace CrashEdit
 {
     public abstract class EntryChunkController : ChunkController
     {
-        public EntryChunkController(NSFController nsfcontroller,EntryChunk entrychunk) : base(nsfcontroller,entrychunk)
+        public EntryChunkController(NSFController nsfcontroller, EntryChunk entrychunk) : base(nsfcontroller,entrychunk)
         {
             EntryChunk = entrychunk;
             PopulateNodes();

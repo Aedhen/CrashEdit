@@ -6,12 +6,29 @@ using System.Windows.Forms;
 
 namespace CrashEdit
 {
+    using Crash.Formats.Crash_Formats.NSD;
+    using CrashEdit.Controls;
+    using CrashEdit.Helpers;
+
     public sealed class NSFController : Controller
     {
-        public NSFController(NSF nsf,GameVersion gameversion)
+        private readonly string _filename;
+
+        public NSFController(NSF nsf, GameVersion gameversion, string filename)
         {
             NSF = nsf;
             GameVersion = gameversion;
+            _filename = filename;
+
+            if (!string.IsNullOrEmpty(filename))
+            {
+                var nsdFileName = NsdHelper.GetNsdFilename(filename);
+                if (nsdFileName != null)
+                {
+                    Nsd = NsdHelper.LoadNsdFile(nsdFileName, true, gameversion);
+                }
+            }
+
             foreach (Chunk chunk in nsf.Chunks)
             {
                 AddNode(CreateChunkController(chunk));
@@ -52,6 +69,7 @@ namespace CrashEdit
         }
 
         public NSF NSF { get; }
+        public NsdBase Nsd { get; }
         public GameVersion GameVersion { get; }
 
         public ChunkController CreateChunkController(Chunk chunk)
@@ -88,6 +106,22 @@ namespace CrashEdit
             {
                 throw new NotImplementedException();
             }
+        }
+
+        protected override Control CreateEditor()
+        {
+            if (Nsd == null)
+            {
+                return null;
+            }
+
+            switch (GameVersion)
+            {
+                case GameVersion.Crash2:
+                    return new NsdBox(Nsd as NSD, NSF, _filename);
+            }
+
+            return base.CreateEditor();
         }
 
         private void Menu_Add_NormalChunk()
