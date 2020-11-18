@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Windows.Forms;
     using Crash;
+    using CrashEdit.Forms;
     using CrashEdit.Helpers;
     using DarkUI.Controls;
     using DarkUI.Forms;
@@ -16,6 +17,7 @@
         private readonly NSF _nsf;
         private readonly string _filename;
         private List<SpawnPointListModel> _spawnPointList;
+        public LoadListView frmLoadListView = null;
 
         public NsdBox(NSD nsd, NSF nsf, string filename)
         {
@@ -165,6 +167,23 @@
         {
             SetNewZoneNames();
             NsdHelper.SaveNsdFile(_nsd, _filename);
+        }
+
+        private void btnViewLoadList_Click(object sender, EventArgs e)
+        {
+            if (frmLoadListView == null || frmLoadListView.IsDisposed)
+            {
+                frmLoadListView = new LoadListView(_nsf);
+            }
+
+            if (!frmLoadListView.Visible)
+            {
+                frmLoadListView.Show();
+            }
+            else
+            {
+                frmLoadListView.Activate();
+            }
         }
     }
 

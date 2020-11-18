@@ -33,16 +33,20 @@
             this.lblX = new DarkUI.Controls.DarkLabel();
             this.lstSpawnPoints = new DarkUI.Controls.DarkListView();
             this.gpbSpawnPoints = new System.Windows.Forms.GroupBox();
+            this.lblName = new DarkUI.Controls.DarkLabel();
+            this.txbName = new DarkUI.Controls.DarkTextBox();
             this.numZ = new DarkUI.Controls.DarkNumericUpDown();
             this.numY = new DarkUI.Controls.DarkNumericUpDown();
             this.numX = new DarkUI.Controls.DarkNumericUpDown();
             this.btnSave = new DarkUI.Controls.DarkButton();
-            this.txbName = new DarkUI.Controls.DarkTextBox();
-            this.lblName = new DarkUI.Controls.DarkLabel();
+            this.gpbNsd = new System.Windows.Forms.GroupBox();
+            this.btnViewLoadList = new DarkUI.Controls.DarkButton();
+            this.btnViewDrawList = new DarkUI.Controls.DarkButton();
             this.gpbSpawnPoints.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numZ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numX)).BeginInit();
+            this.gpbNsd.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblZ
@@ -101,12 +105,32 @@
             this.gpbSpawnPoints.Controls.Add(this.lstSpawnPoints);
             this.gpbSpawnPoints.Font = new System.Drawing.Font("Arial", 9F);
             this.gpbSpawnPoints.ForeColor = System.Drawing.SystemColors.Window;
-            this.gpbSpawnPoints.Location = new System.Drawing.Point(3, 3);
+            this.gpbSpawnPoints.Location = new System.Drawing.Point(6, 20);
             this.gpbSpawnPoints.Name = "gpbSpawnPoints";
             this.gpbSpawnPoints.Size = new System.Drawing.Size(186, 220);
             this.gpbSpawnPoints.TabIndex = 2;
             this.gpbSpawnPoints.TabStop = false;
             this.gpbSpawnPoints.Text = "Spawn Points";
+            // 
+            // lblName
+            // 
+            this.lblName.AutoSize = true;
+            this.lblName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblName.Location = new System.Drawing.Point(7, 112);
+            this.lblName.Name = "lblName";
+            this.lblName.Size = new System.Drawing.Size(35, 15);
+            this.lblName.TabIndex = 5;
+            this.lblName.Text = "Zone";
+            // 
+            // txbName
+            // 
+            this.txbName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.txbName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txbName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.txbName.Location = new System.Drawing.Point(54, 110);
+            this.txbName.Name = "txbName";
+            this.txbName.Size = new System.Drawing.Size(120, 21);
+            this.txbName.TabIndex = 4;
             // 
             // numZ
             // 
@@ -161,7 +185,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(424, 436);
+            this.btnSave.Location = new System.Drawing.Point(500, 217);
             this.btnSave.Name = "btnSave";
             this.btnSave.Padding = new System.Windows.Forms.Padding(5);
             this.btnSave.Size = new System.Drawing.Size(75, 23);
@@ -169,40 +193,58 @@
             this.btnSave.Text = "Save";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // txbName
+            // gpbNsd
             // 
-            this.txbName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
-            this.txbName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txbName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.txbName.Location = new System.Drawing.Point(54, 110);
-            this.txbName.Name = "txbName";
-            this.txbName.Size = new System.Drawing.Size(120, 21);
-            this.txbName.TabIndex = 4;
+            this.gpbNsd.Controls.Add(this.btnSave);
+            this.gpbNsd.Controls.Add(this.gpbSpawnPoints);
+            this.gpbNsd.Font = new System.Drawing.Font("Arial", 9F);
+            this.gpbNsd.ForeColor = System.Drawing.SystemColors.Window;
+            this.gpbNsd.Location = new System.Drawing.Point(3, 213);
+            this.gpbNsd.Name = "gpbNsd";
+            this.gpbNsd.Size = new System.Drawing.Size(581, 246);
+            this.gpbNsd.TabIndex = 4;
+            this.gpbNsd.TabStop = false;
+            this.gpbNsd.Text = "NSD";
             // 
-            // lblName
+            // btnViewLoadList
             // 
-            this.lblName.AutoSize = true;
-            this.lblName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lblName.Location = new System.Drawing.Point(7, 112);
-            this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(35, 15);
-            this.lblName.TabIndex = 5;
-            this.lblName.Text = "Zone";
+            this.btnViewLoadList.Font = new System.Drawing.Font("Arial", 9F);
+            this.btnViewLoadList.ForeColor = System.Drawing.SystemColors.Window;
+            this.btnViewLoadList.Location = new System.Drawing.Point(493, 31);
+            this.btnViewLoadList.Name = "btnViewLoadList";
+            this.btnViewLoadList.Padding = new System.Windows.Forms.Padding(5);
+            this.btnViewLoadList.Size = new System.Drawing.Size(75, 23);
+            this.btnViewLoadList.TabIndex = 5;
+            this.btnViewLoadList.Text = "Load Lists";
+            this.btnViewLoadList.Click += new System.EventHandler(this.btnViewLoadList_Click);
+            // 
+            // btnViewDrawList
+            // 
+            this.btnViewDrawList.Font = new System.Drawing.Font("Arial", 9F);
+            this.btnViewDrawList.ForeColor = System.Drawing.SystemColors.Window;
+            this.btnViewDrawList.Location = new System.Drawing.Point(493, 60);
+            this.btnViewDrawList.Name = "btnViewDrawList";
+            this.btnViewDrawList.Padding = new System.Windows.Forms.Padding(5);
+            this.btnViewDrawList.Size = new System.Drawing.Size(75, 23);
+            this.btnViewDrawList.TabIndex = 6;
+            this.btnViewDrawList.Text = "Draw Lists";
             // 
             // NsdBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.gpbSpawnPoints);
+            this.Controls.Add(this.btnViewDrawList);
+            this.Controls.Add(this.btnViewLoadList);
+            this.Controls.Add(this.gpbNsd);
             this.Name = "NsdBox";
-            this.Size = new System.Drawing.Size(502, 462);
+            this.Size = new System.Drawing.Size(587, 462);
             this.gpbSpawnPoints.ResumeLayout(false);
             this.gpbSpawnPoints.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numZ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numX)).EndInit();
+            this.gpbNsd.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -219,5 +261,8 @@
         private DarkUI.Controls.DarkButton btnSave;
         private DarkUI.Controls.DarkLabel lblName;
         private DarkUI.Controls.DarkTextBox txbName;
+        private System.Windows.Forms.GroupBox gpbNsd;
+        private DarkUI.Controls.DarkButton btnViewLoadList;
+        private DarkUI.Controls.DarkButton btnViewDrawList;
     }
 }
