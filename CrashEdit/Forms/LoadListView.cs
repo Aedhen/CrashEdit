@@ -1,17 +1,19 @@
 ﻿namespace CrashEdit.Forms
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Windows.Forms;
     using Crash;
     using Crash.UI.Properties;
-    using DarkUI.Collections;
-    using DarkUI.Controls;
     using DarkUI.Forms;
 
-    public partial class LoadListView : DarkForm
+    public sealed partial class LoadListView : DarkForm
     {
         private readonly NSF _nsf;
         private List<LoadListViewZone> _loadListTreeData;
+
+        private readonly ContextMenu _nodeContextMenu;
 
         // https://stackoverflow.com/questions/19226857/winform-treeview-find-node-by-tag
 
@@ -20,10 +22,16 @@
             _nsf = nsf;
 
             InitializeComponent();
-            SetLoadListTree();
+            txbFilter.KeyDown += txtInput_KeyDown;
+            txbFilter.KeyPress += txtInput_KeyPress;
+            InitTreeView();
+
+            _nodeContextMenu = new ContextMenu();
+            AddMenu("Copy name", CopyToClipboard);
+            tvwLoadList.MouseUp += tvwLoadList_MouseUp;
         }
 
-        private void SetLoadListTree()
+        private void InitTreeView()
         {
             _loadListTreeData = new List<LoadListViewZone>();
 
@@ -58,23 +66,38 @@
                 }
             }
 
-            tvwLoadList.Nodes = new ObservableList<DarkTreeNode>();
+            _loadListTreeData = _loadListTreeData.OrderBy(x => x.Zone).ToList();
+
+            SetTreeViewNodes();
+        }
+
+        private void SetTreeViewNodes(string filter = null)
+        {
+            tvwLoadList.Nodes.Clear();
             foreach (var treeItem in _loadListTreeData)
             {
-                var zoneNode = new DarkTreeNode(treeItem.Zone);
-                zoneNode.Nodes = new ObservableList<DarkTreeNode>();
+                var zoneNode = new TreeNode(treeItem.Zone);
 
-                var listANode = CreateListNodes(treeItem.LoadListA, "Load List A");
-                var listBNode = CreateListNodes(treeItem.LoadListB, "Load List B");
+                var listANode = CreateListNodes(treeItem.LoadListA, "Load List A", filter);
+                if (filter == null || listANode.Nodes.Count > 0)
+                {
+                    zoneNode.Nodes.Add(listANode);
+                }
 
-                zoneNode.Nodes.Add(listANode);
-                zoneNode.Nodes.Add(listBNode);
+                var listBNode = CreateListNodes(treeItem.LoadListB, "Load List B", filter);
+                if (filter == null || listBNode.Nodes.Count > 0)
+                {
+                    zoneNode.Nodes.Add(listBNode);
+                }
 
-                tvwLoadList.Nodes.Add(zoneNode);
+                if (filter == null || zoneNode.Nodes.Count > 0)
+                {
+                    tvwLoadList.Nodes.Add(zoneNode);
+                }
             }
         }
 
-        private DarkTreeNode CreateListNodes(List<LoadListViewLoadItem> loadItems, string nodeText)
+        private TreeNode CreateListNodes(List<LoadListViewLoadItem> loadItems, string nodeText, string filter = null)
         {
             var normalChunkCount = loadItems.Count(x => x.ChunkType == 0);
             var textureChunkCount = loadItems.Count(x => x.ChunkType == 1);
@@ -82,17 +105,41 @@
             var waveChunkCount = loadItems.Count(x => x.ChunkType == 4);
             var speechChunkCount = loadItems.Count(x => x.ChunkType == 5);
             var listANode =
-                new DarkTreeNode(
+                new TreeNode(
                     $"{nodeText} (normal: {normalChunkCount}, texture: {textureChunkCount}, sound: {soundChunkCount}, wave: {waveChunkCount}, speech: {speechChunkCount})");
-            listANode.Nodes = new ObservableList<DarkTreeNode>();
             foreach (var item in loadItems)
             {
-                var itemNode = new DarkTreeNode(GetChunkText(item.ChunkType, item.ChunkIndex, item.ChunkEid));
-                itemNode.Nodes = new ObservableList<DarkTreeNode>();
-                foreach (var entry in item.Entries)
-                    itemNode.Nodes.Add(new DarkTreeNode($"{entry.Position} - {entry.Entry}"));
+                var chunkName = Entry.EIDToEName(item.ChunkEid);
+                if (!string.IsNullOrEmpty(filter) && item.ChunkEid != 0)
+                {
+                    if (!string.Equals(chunkName, filter, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        continue;
+                    }
+                }
 
-                listANode.Nodes.Add(itemNode);
+                var itemNode = new TreeNode(GetChunkText(item.ChunkType, item.ChunkIndex, item.ChunkEid));
+                if (item.Entries.Count > 0)
+                {
+                    foreach (var entry in item.Entries)
+                    {
+                        if (!string.IsNullOrEmpty(filter) && !string.Equals(entry.Entry, filter, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            continue;
+                        }
+
+                        itemNode.Nodes.Add(new TreeNode($"{entry.Position} - {entry.Entry}") { Tag = entry.Entry });
+                    }
+                }
+                else
+                {
+                    itemNode.Tag = chunkName;
+                }
+
+                if (filter == null || itemNode.Nodes.Count > 0)
+                {
+                    listANode.Nodes.Add(itemNode);
+                }
             }
 
             return listANode;
@@ -158,6 +205,47 @@
                         treeLoadList.Add(loadItem);
                     }
                 }
+            }
+        }
+
+        private void AddMenu(string text, ControllerMenuDelegate proc)
+        {
+            void handler(object sender, EventArgs e)
+            {
+                try
+                {
+                    ErrorManager.EnterSubject(new Object());
+                    proc();
+                }
+                catch (GUIException ex)
+                {
+                    MessageBox.Show(ex.Message, text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    ErrorManager.ExitSubject();
+                }
+            }
+            _nodeContextMenu.MenuItems.Add(text, handler);
+        }
+
+        private void tvwLoadList_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                tvwLoadList.SelectedNode = tvwLoadList.GetNodeAt(e.X, e.Y);
+                if (tvwLoadList.SelectedNode?.Tag != null)
+                {
+                    _nodeContextMenu.Show(tvwLoadList, e.Location);
+                }
+            }
+        }
+
+        private void CopyToClipboard()
+        {
+            if (tvwLoadList?.SelectedNode != null)
+            {
+                Clipboard.SetText((string)tvwLoadList.SelectedNode.Tag);
             }
         }
 
@@ -239,7 +327,27 @@
 
         private void btnRefresh_Click(object sender, System.EventArgs e)
         {
-            SetLoadListTree();
+            InitTreeView();
+        }
+
+        private void txtInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Enter)
+            {
+                return;
+            }
+
+            e.Handled = true;
+            SetTreeViewNodes(txbFilter.Text);
+        }
+
+        private void txtInput_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // prevent beeping
+            if (e.KeyChar == (char)Keys.Enter || e.KeyChar == (char)Keys.Escape || e.KeyChar == (char)Keys.LineFeed)
+            {
+                e.Handled = true;
+            }
         }
     }
 
