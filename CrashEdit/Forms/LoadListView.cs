@@ -64,7 +64,7 @@
                             continue;
                         }
 
-                        var camera = new LoadListCamera();
+                        var camera = new LoadListViewCamera();
                         AddLoadListToTree(entity.LoadListA, camera.LoadListA);
                         AddLoadListToTree(entity.LoadListB, camera.LoadListB);
                         treeItem.Cameras.Add(camera);
@@ -130,7 +130,7 @@
                     }
                 }
 
-                var itemNode = new TreeNode(GetChunkText(item.Value));
+                var itemNode = new TreeNode(GetChunkNodeText(item.Value));
                 if (item.Value.LoadCount > 1)
                 {
                     itemNode.BackColor = Color.Red;
@@ -190,30 +190,30 @@
                 return;
             }
 
-            foreach (var loadListAItem in loadList.Rows)
+            foreach (var loadListRow in loadList.Rows)
             {
-                if (loadListAItem.Values == null || loadListAItem.Values.Count == 0)
+                if (loadListRow.Values == null || loadListRow.Values.Count == 0)
                 {
                     continue;
                 }
 
-                for (var listEntryIndex = 0; listEntryIndex < loadListAItem.Values.Count; listEntryIndex++)
+                for (var listEntryIndex = 0; listEntryIndex < loadListRow.Values.Count; listEntryIndex++)
                 {
-                    var itemEid = loadListAItem.Values[listEntryIndex];
+                    var itemEid = loadListRow.Values[listEntryIndex];
                     var itemAsChunkIndex = FindChunkIndexForEntryEid(itemEid);
                     if (itemAsChunkIndex != null)
                     {
-                        var itemAsChunk = _nsf.Chunks[itemAsChunkIndex.Value];
-                        var loadItem = new LoadListViewLoadItem();
-                        loadItem.ChunkEid = itemEid;
-                        loadItem.ChunkIndex = itemAsChunkIndex.Value;
-                        loadItem.ChunkType = itemAsChunk.Type;
                         if (treeLoadList.ContainsKey(itemAsChunkIndex.Value))
                         {
                             treeLoadList[itemAsChunkIndex.Value].LoadCount += 1;
                         }
                         else
                         {
+                            var itemAsChunk = _nsf.Chunks[itemAsChunkIndex.Value];
+                            var loadItem = new LoadListViewLoadItem();
+                            loadItem.ChunkEid = itemEid;
+                            loadItem.ChunkIndex = itemAsChunkIndex.Value;
+                            loadItem.ChunkType = itemAsChunk.Type;
                             treeLoadList.Add(itemAsChunkIndex.Value, loadItem);
                         }
 
@@ -233,7 +233,7 @@
                         treeLoadList[chunkForItemIndex.Value].Entries.Add(new LoadListViewLoadItemEntry
                         {
                             Name = itemAsEntry.EName,
-                            Position = loadListAItem.MetaValue,
+                            Position = loadListRow.MetaValue,
                             ListIndex = listEntryIndex
                         });
                     }
@@ -246,7 +246,7 @@
                         loadItem.Entries.Add(new LoadListViewLoadItemEntry
                         {
                             Name = itemAsEntry.EName,
-                            Position = loadListAItem.MetaValue,
+                            Position = loadListRow.MetaValue,
                             ListIndex = listEntryIndex
                         });
                         treeLoadList.Add(chunkForItemIndex.Value, loadItem);
@@ -345,7 +345,7 @@
             return null;
         }
 
-        private string GetChunkText(LoadListViewLoadItem loadItem)
+        private string GetChunkNodeText(LoadListViewLoadItem loadItem)
         {
             string chunkText;
             List<string> chunkTextInterpolationArgs = new List<string>();
@@ -415,17 +415,17 @@
     {
         public LoadListViewZone()
         {
-            Cameras = new List<LoadListCamera>();
+            Cameras = new List<LoadListViewCamera>();
         }
 
         public string Zone { get; set; }
 
-        public List<LoadListCamera> Cameras { get; set; }
+        public List<LoadListViewCamera> Cameras { get; set; }
     }
 
-    public class LoadListCamera
+    public class LoadListViewCamera
     {
-        public LoadListCamera()
+        public LoadListViewCamera()
         {
             LoadListA = new SortedList<int, LoadListViewLoadItem>();
             LoadListB = new SortedList<int, LoadListViewLoadItem>();

@@ -18,6 +18,7 @@
         private readonly string _filename;
         private List<SpawnPointListModel> _spawnPointList;
         public LoadListView frmLoadListView = null;
+        public DrawListView frmDrawListView = null;
 
         public NsdBox(NSD nsd, NSF nsf, string filename)
         {
@@ -183,6 +184,23 @@
             else
             {
                 frmLoadListView.Activate();
+            }
+        }
+
+        private void btnViewDrawList_Click(object sender, EventArgs e)
+        {
+            if (frmDrawListView == null || frmDrawListView.IsDisposed)
+            {
+                frmDrawListView = new DrawListView(_nsf);
+            }
+
+            if (!frmDrawListView.Visible)
+            {
+                frmDrawListView.Show();
+            }
+            else
+            {
+                frmDrawListView.Activate();
             }
         }
     }

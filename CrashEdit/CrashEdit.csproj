@@ -117,6 +117,12 @@
     <Compile Include="Forms\ErrorReporter.Designer.cs">
       <DependentUpon>ErrorReporter.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\DrawListView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DrawListView.Designer.cs">
+      <DependentUpon>DrawListView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\LoadListView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -429,6 +435,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ErrorReporter.resx">
       <DependentUpon>ErrorReporter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DrawListView.resx">
+      <DependentUpon>DrawListView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LoadListView.resx">
       <DependentUpon>LoadListView.cs</DependentUpon>

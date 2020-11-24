@@ -210,7 +210,7 @@
             // 
             this.btnViewLoadList.Font = new System.Drawing.Font("Arial", 9F);
             this.btnViewLoadList.ForeColor = System.Drawing.SystemColors.Window;
-            this.btnViewLoadList.Location = new System.Drawing.Point(493, 31);
+            this.btnViewLoadList.Location = new System.Drawing.Point(3, 3);
             this.btnViewLoadList.Name = "btnViewLoadList";
             this.btnViewLoadList.Padding = new System.Windows.Forms.Padding(5);
             this.btnViewLoadList.Size = new System.Drawing.Size(75, 23);
@@ -222,12 +222,13 @@
             // 
             this.btnViewDrawList.Font = new System.Drawing.Font("Arial", 9F);
             this.btnViewDrawList.ForeColor = System.Drawing.SystemColors.Window;
-            this.btnViewDrawList.Location = new System.Drawing.Point(493, 60);
+            this.btnViewDrawList.Location = new System.Drawing.Point(84, 3);
             this.btnViewDrawList.Name = "btnViewDrawList";
             this.btnViewDrawList.Padding = new System.Windows.Forms.Padding(5);
             this.btnViewDrawList.Size = new System.Drawing.Size(75, 23);
             this.btnViewDrawList.TabIndex = 6;
             this.btnViewDrawList.Text = "Draw Lists";
+            this.btnViewDrawList.Click += new System.EventHandler(this.btnViewDrawList_Click);
             // 
             // NsdBox
             // 
