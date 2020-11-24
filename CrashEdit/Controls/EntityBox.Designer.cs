@@ -104,8 +104,6 @@ namespace CrashEdit
             this.cmdPreviousVictim = new DarkUI.Controls.DarkButton();
             this.lblVictimIndex = new DarkUI.Controls.DarkLabel();
             this.tabCamera = new System.Windows.Forms.TabPage();
-            this.fraDarkness = new System.Windows.Forms.GroupBox();
-            this.chkDarkness = new DarkUI.Controls.DarkCheckBox();
             this.fraFOV = new System.Windows.Forms.GroupBox();
             this.lblFOVPosition = new DarkUI.Controls.DarkLabel();
             this.cmdRemoveFOVFrame = new DarkUI.Controls.DarkButton();
@@ -286,7 +284,6 @@ namespace CrashEdit
             this.fraVictims.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numVictimID)).BeginInit();
             this.tabCamera.SuspendLayout();
-            this.fraDarkness.SuspendLayout();
             this.fraFOV.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numFOVPosition)).BeginInit();
             this.fraFOVFrame.SuspendLayout();
@@ -1329,7 +1326,6 @@ namespace CrashEdit
             // tabCamera
             // 
             this.tabCamera.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.tabCamera.Controls.Add(this.fraDarkness);
             this.tabCamera.Controls.Add(this.fraFOV);
             this.tabCamera.Controls.Add(this.fraNeighbor);
             this.tabCamera.Controls.Add(this.fraAvgDist);
@@ -1346,29 +1342,6 @@ namespace CrashEdit
             this.tabCamera.TabIndex = 2;
             this.tabCamera.Text = "Camera";
             this.tabCamera.Enter += new System.EventHandler(this.tabCamera_Enter);
-            // 
-            // fraDarkness
-            // 
-            this.fraDarkness.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
-            this.fraDarkness.Controls.Add(this.chkDarkness);
-            this.fraDarkness.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraDarkness.Location = new System.Drawing.Point(3, 410);
-            this.fraDarkness.Name = "fraDarkness";
-            this.fraDarkness.Size = new System.Drawing.Size(120, 52);
-            this.fraDarkness.TabIndex = 22;
-            this.fraDarkness.TabStop = false;
-            this.fraDarkness.Text = "Darkness";
-            this.fraDarkness.UseCompatibleTextRendering = true;
-            // 
-            // chkDarkness
-            // 
-            this.chkDarkness.AutoSize = true;
-            this.chkDarkness.Location = new System.Drawing.Point(6, 20);
-            this.chkDarkness.Name = "chkDarkness";
-            this.chkDarkness.Size = new System.Drawing.Size(72, 19);
-            this.chkDarkness.TabIndex = 0;
-            this.chkDarkness.Text = "Enabled";
-            this.chkDarkness.CheckedChanged += new System.EventHandler(this.chkDarkness_CheckedChanged);
             // 
             // fraFOV
             // 
@@ -3148,8 +3121,6 @@ namespace CrashEdit
             ((System.ComponentModel.ISupportInitialize)(this.numVictimID)).EndInit();
             this.tabCamera.ResumeLayout(false);
             this.tabCamera.PerformLayout();
-            this.fraDarkness.ResumeLayout(false);
-            this.fraDarkness.PerformLayout();
             this.fraFOV.ResumeLayout(false);
             this.fraFOV.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numFOVPosition)).EndInit();
@@ -3432,7 +3403,5 @@ namespace CrashEdit
         private DarkUI.Controls.DarkLabel lblPayloadTexture;
         private DarkUI.Controls.DarkLabel lblPayloadSound;
         private DarkUI.Controls.DarkLabel lblVerifyLoadLists;
-        private System.Windows.Forms.GroupBox fraDarkness;
-        private DarkUI.Controls.DarkCheckBox chkDarkness;
     }
 }

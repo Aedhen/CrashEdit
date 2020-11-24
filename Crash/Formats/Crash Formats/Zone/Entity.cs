@@ -114,8 +114,6 @@ namespace Crash
         private int? cameraindex = null;
         [EntityPropertyField(0x174)]
         private int? camerasubindex = null;
-        ////[EntityPropertyField(0x185)]
-        ////private EntityUInt32Property darkness = null;
         [EntityPropertyField(0x208)]
         private EntityT4Property loadlista = null;
         [EntityPropertyField(0x209)]
@@ -282,71 +280,6 @@ namespace Crash
             get => camerasubindex;
             set => camerasubindex = value;
         }
-
-        ////public bool? Darkness
-        ////{
-        ////    get
-        ////    {
-        ////        var darknessBytes = GetDarknessBytes();
-        ////        if (darknessBytes == null)
-        ////        {
-        ////            return null;
-        ////        }
-
-        ////        return (darknessBytes[0] & 0x0F) == 4;
-        ////    }
-        ////    set
-        ////    {
-        ////        if (!value.HasValue)
-        ////        {
-        ////            return;
-        ////        }
-
-        ////        var darknessBytes = GetDarknessBytes();
-        ////        if (darknessBytes == null)
-        ////        {
-        ////            return;
-        ////        }
-
-        ////        var row = darkness.Rows.FirstOrDefault(x => x.MetaValue == 0);
-        ////        if (row == null)
-        ////        {
-        ////            return;
-        ////        }
-
-        ////        for (var i = 0; i < row.Values.Count; i++)
-        ////        {
-        ////            darknessBytes = BitConverter.GetBytes(row.Values[i]);
-        ////            if (value.Value && (darknessBytes[0] & 0x0F) != 4)
-        ////            {
-        ////                darknessBytes[0] += 4;
-        ////            }
-        ////            else if (!value.Value && (darknessBytes[0] & 0x0F) == 4)
-        ////            {
-        ////                darknessBytes[0] -= 4;
-        ////            }
-
-        ////            row.Values[i] = BitConverter.ToUInt32(darknessBytes, 0);
-        ////        }
-        ////    }
-        ////}
-
-        ////private byte[] GetDarknessBytes()
-        ////{
-        ////    if (darkness?.Rows == null || darkness.RowCount == 0)
-        ////    {
-        ////        return null;
-        ////    }
-
-        ////    var row = darkness.Rows.FirstOrDefault(x => x.MetaValue == 0);
-        ////    if (row?.Values == null || !row.Values.Any())
-        ////    {
-        ////        return null;
-        ////    }
-
-        ////    var bytes = BitConverter.GetBytes(row.Values.First());
-        ////    return bytes;
-        ////}
 
         public EntityT4Property SLST
         {
