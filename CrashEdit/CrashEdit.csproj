@@ -111,6 +111,9 @@
     </Compile>
     <Compile Include="Controls\CommonZoneEntryViewer.cs" />
     <Compile Include="ExternalTool.cs" />
+    <Compile Include="Models\Forms\DrawListViewCamera.cs" />
+    <Compile Include="Models\Forms\DrawListViewDrawItemEntity.cs" />
+    <Compile Include="Models\Forms\DrawListViewZone.cs" />
     <Compile Include="Forms\ErrorReporter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,6 +132,10 @@
     <Compile Include="Forms\LoadListView.Designer.cs">
       <DependentUpon>LoadListView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Forms\LoadListViewCamera.cs" />
+    <Compile Include="Models\Forms\LoadListViewLoadItem.cs" />
+    <Compile Include="Models\Forms\LoadListViewLoadItemEntry.cs" />
+    <Compile Include="Models\Forms\LoadListViewZone.cs" />
     <Compile Include="Forms\ShortcutsWindow.cs">
       <SubType>Form</SubType>
     </Compile>

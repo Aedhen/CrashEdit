@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Windows.Forms;
     using Crash;
+    using CrashEdit.Models.Forms;
     using DarkUI.Controls;
     using DarkUI.Forms;
 
@@ -14,7 +15,7 @@
         private readonly NSF _nsf;
         private List<DrawListViewZone> _drawListTreeData;
 
-        private readonly ContextMenu _nodeContextMenu;
+        private readonly ContextMenu _nodeContextMenu = new ContextMenu();
 
         private const string FilterTypeId = "ID";
         private const string FilterTypeName = "Name";
@@ -24,13 +25,24 @@
             _nsf = nsf;
 
             InitializeComponent();
+            SizeChanged += Form_SizeChanged;
+
             InitFilter();
             InitTreeView();
+        }
 
-            _nodeContextMenu = new ContextMenu();
-            AddMenu("Copy ID", CopyToClipboard);
-
+        private void InitTreeView()
+        {
             tvwDrawList.MouseUp += TvwDrawListMouseUp;
+            tvwDrawList.AfterExpand += tvwDrawList_AfterExpand;
+            SetDrawListTreeData();
+            SetTreeViewNodes();
+            AddContextMenu("Copy ID", CopyToClipboard);
+        }
+
+        private void Form_SizeChanged(object sender, EventArgs e)
+        {
+            tvwDrawList.Size = new Size(Size.Width - 40, Size.Height - 92);
         }
 
         private void InitFilter()
@@ -43,7 +55,7 @@
             dpdFilter.SelectedItem = dpdFilter.Items[0];
         }
 
-        private void InitTreeView()
+        private void SetDrawListTreeData()
         {
             _drawListTreeData = new List<DrawListViewZone>();
 
@@ -87,8 +99,6 @@
             }
 
             _drawListTreeData = _drawListTreeData.OrderBy(x => x.Zone, StringComparer.Ordinal).ToList();
-
-            SetTreeViewNodes();
         }
 
         private void SetTreeViewNodes(bool applyFilter = false)
@@ -238,7 +248,7 @@
             }
         }
 
-        private void AddMenu(string text, ControllerMenuDelegate proc)
+        private void AddContextMenu(string text, ControllerMenuDelegate proc)
         {
             void handler(object sender, EventArgs e)
             {
@@ -272,6 +282,14 @@
             }
         }
 
+        private void tvwDrawList_AfterExpand(object sender, TreeViewEventArgs e)
+        {
+            if (e.Node.Nodes.Count == 1)
+            {
+                e.Node.Nodes[0].Expand();
+            }
+        }
+
         private void CopyToClipboard()
         {
             if (tvwDrawList?.SelectedNode != null)
@@ -282,7 +300,8 @@
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            InitTreeView();
+            SetDrawListTreeData();
+            SetTreeViewNodes();
         }
 
         private void txtInput_KeyDown(object sender, KeyEventArgs e)
@@ -307,70 +326,25 @@
 
         private void btnExpandTree_Click(object sender, EventArgs e)
         {
+            tvwDrawList.Visible = false;
             tvwDrawList.ExpandAll();
+            tvwDrawList.Visible = true;
+
+            if (tvwDrawList.Nodes.Count > 0)
+            {
+                tvwDrawList.Nodes[0].EnsureVisible();
+            }
         }
 
         private void btnCollapseTree_Click(object sender, EventArgs e)
         {
+            tvwDrawList.Visible = false;
             tvwDrawList.CollapseAll();
-        }
-    }
+            tvwDrawList.Visible = true;
 
-    public class DrawListViewZone
-    {
-        public DrawListViewZone()
-        {
-            Cameras = new List<DrawListViewCamera>();
-        }
-
-        public string Zone { get; set; }
-
-        public List<DrawListViewCamera> Cameras { get; set; }
-    }
-
-    public class DrawListViewCamera
-    {
-        public DrawListViewCamera()
-        {
-            DrawListA = new SortedList<int, DrawListViewDrawItemEntity>();
-            DrawListB = new SortedList<int, DrawListViewDrawItemEntity>();
-        }
-
-        public SortedList<int, DrawListViewDrawItemEntity> DrawListA { get; set; }
-
-        public SortedList<int, DrawListViewDrawItemEntity> DrawListB { get; set; }
-    }
-
-    public class DrawListViewDrawItemEntity
-    {
-        public DrawListViewDrawItemEntity()
-        {
-            LoadCount = 1;
-        }
-
-        public short? Position { get; set; }
-
-        public int Id { get; set; }
-
-        public string Name { get; set; }
-
-        public int Type { get; set; }
-
-        public int Subtype { get; set; }
-
-        public int LoadCount { get; set; }
-
-        public string NodeText
-        {
-            get
+            if (tvwDrawList.Nodes.Count > 0)
             {
-                var nodeText = $"{Position} - ID {Id}, {Name} - {Type} {Subtype}";
-                if (LoadCount > 1)
-                {
-                    nodeText += $" (times loaded: {LoadCount})";
-                }
-
-                return nodeText;
+                tvwDrawList.Nodes[0].EnsureVisible();
             }
         }
     }

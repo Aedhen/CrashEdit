@@ -1,6 +1,7 @@
 ﻿namespace CrashEdit.Forms
 {
     using System.Collections.ObjectModel;
+    using System.Drawing;
     using System.Windows.Forms;
     using DarkUI.Controls;
 
@@ -39,6 +40,8 @@
             this.dpdFilter = new DarkUI.Controls.DarkDropdownList();
             this.btnExpandTree = new DarkUI.Controls.DarkButton();
             this.btnCollapseTree = new DarkUI.Controls.DarkButton();
+            this.darkSeparator1 = new DarkUI.Controls.DarkSeparator();
+            this.darkSeparator2 = new DarkUI.Controls.DarkSeparator();
             this.SuspendLayout();
             // 
             // tvwDrawList
@@ -95,29 +98,47 @@
             // 
             // btnExpandTree
             // 
-            this.btnExpandTree.Location = new System.Drawing.Point(94, 12);
+            this.btnExpandTree.Location = new System.Drawing.Point(109, 12);
             this.btnExpandTree.Name = "btnExpandTree";
             this.btnExpandTree.Padding = new System.Windows.Forms.Padding(5);
-            this.btnExpandTree.Size = new System.Drawing.Size(56, 23);
+            this.btnExpandTree.Size = new System.Drawing.Size(75, 23);
             this.btnExpandTree.TabIndex = 5;
             this.btnExpandTree.Text = "Expand";
             this.btnExpandTree.Click += new System.EventHandler(this.btnExpandTree_Click);
             // 
             // btnCollapseTree
             // 
-            this.btnCollapseTree.Location = new System.Drawing.Point(157, 12);
+            this.btnCollapseTree.Location = new System.Drawing.Point(190, 12);
             this.btnCollapseTree.Name = "btnCollapseTree";
             this.btnCollapseTree.Padding = new System.Windows.Forms.Padding(5);
-            this.btnCollapseTree.Size = new System.Drawing.Size(58, 23);
+            this.btnCollapseTree.Size = new System.Drawing.Size(75, 23);
             this.btnCollapseTree.TabIndex = 6;
             this.btnCollapseTree.Text = "Collapse";
             this.btnCollapseTree.Click += new System.EventHandler(this.btnCollapseTree_Click);
+            // 
+            // darkSeparator1
+            // 
+            this.darkSeparator1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.darkSeparator1.Location = new System.Drawing.Point(0, 0);
+            this.darkSeparator1.Name = "darkSeparator1";
+            this.darkSeparator1.Size = new System.Drawing.Size(516, 2);
+            this.darkSeparator1.TabIndex = 1;
+            // 
+            // darkSeparator2
+            // 
+            this.darkSeparator2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.darkSeparator2.Location = new System.Drawing.Point(0, 2);
+            this.darkSeparator2.Name = "darkSeparator2";
+            this.darkSeparator2.Size = new System.Drawing.Size(516, 2);
+            this.darkSeparator2.TabIndex = 0;
             // 
             // DrawListView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(516, 566);
+            this.Controls.Add(this.darkSeparator2);
+            this.Controls.Add(this.darkSeparator1);
             this.Controls.Add(this.btnCollapseTree);
             this.Controls.Add(this.btnExpandTree);
             this.Controls.Add(this.dpdFilter);
@@ -141,5 +162,7 @@
         private DarkUI.Controls.DarkDropdownList dpdFilter;
         private DarkButton btnExpandTree;
         private DarkButton btnCollapseTree;
+        private DarkSeparator darkSeparator1;
+        private DarkSeparator darkSeparator2;
     }
 }

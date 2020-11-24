@@ -7,6 +7,7 @@
     using System.Windows.Forms;
     using Crash;
     using Crash.UI.Properties;
+    using CrashEdit.Models.Forms;
     using DarkUI.Forms;
 
     public sealed partial class LoadListView : DarkForm
@@ -14,25 +15,40 @@
         private readonly NSF _nsf;
         private List<LoadListViewZone> _loadListTreeData;
 
-        private readonly ContextMenu _nodeContextMenu;
-
-        // https://stackoverflow.com/questions/19226857/winform-treeview-find-node-by-tag
+        private readonly ContextMenu _nodeContextMenu = new ContextMenu();
 
         public LoadListView(NSF nsf)
         {
             _nsf = nsf;
 
             InitializeComponent();
-            txbFilter.KeyDown += txtInput_KeyDown;
-            txbFilter.KeyPress += txtInput_KeyPress;
-            InitTreeView();
+            SizeChanged += Form_SizeChanged;
 
-            _nodeContextMenu = new ContextMenu();
-            AddMenu("Copy name", CopyToClipboard);
-            tvwLoadList.MouseUp += tvwLoadList_MouseUp;
+            InitFilter();
+            InitTreeView();
         }
 
         private void InitTreeView()
+        {
+            tvwLoadList.MouseUp += tvwLoadList_MouseUp;
+            tvwLoadList.AfterExpand += tvwLoadList_AfterExpand;
+            SetLoadListTreeData();
+            SetTreeViewNodes();
+            AddContextMenu("Copy name", CopyToClipboard);
+        }
+
+        private void InitFilter()
+        {
+            txbFilter.KeyDown += txtInput_KeyDown;
+            txbFilter.KeyPress += txtInput_KeyPress;
+        }
+
+        private void Form_SizeChanged(object sender, EventArgs e)
+        {
+            tvwLoadList.Size = new Size(Size.Width - 40, Size.Height - 92);
+        }
+
+        private void SetLoadListTreeData()
         {
             _loadListTreeData = new List<LoadListViewZone>();
 
@@ -59,7 +75,8 @@
 
                     foreach (var entity in zoneEntry.Entities)
                     {
-                        if ((entity.LoadListA == null || entity.LoadListA.RowCount <= 0) && (entity.LoadListB == null || entity.LoadListB.RowCount <= 0))
+                        if ((entity.LoadListA == null || entity.LoadListA.RowCount <= 0) &&
+                            (entity.LoadListB == null || entity.LoadListB.RowCount <= 0))
                         {
                             continue;
                         }
@@ -75,11 +92,9 @@
             }
 
             _loadListTreeData = _loadListTreeData.OrderBy(x => x.Zone, StringComparer.Ordinal).ToList();
-
-            SetTreeViewNodes();
         }
 
-        private void SetTreeViewNodes(string filter = null)
+        private void SetTreeViewNodes(bool applyFilter = false)
         {
             tvwLoadList.Nodes.Clear();
             foreach (var treeItem in _loadListTreeData)
@@ -91,40 +106,40 @@
                     var camera = treeItem.Cameras[i];
                     var cameraNode = new TreeNode($"Camera {i+1}");
 
-                    var listANode = CreateListNodes(camera.LoadListA, "Load List A", filter);
-                    if (filter == null || listANode.Nodes.Count > 0)
+                    var listANode = CreateListNodes(camera.LoadListA, "Load List A", applyFilter);
+                    if (!applyFilter || listANode.Nodes.Count > 0)
                     {
                         cameraNode.Nodes.Add(listANode);
                     }
 
-                    var listBNode = CreateListNodes(camera.LoadListB, "Load List B", filter);
-                    if (filter == null || listBNode.Nodes.Count > 0)
+                    var listBNode = CreateListNodes(camera.LoadListB, "Load List B", applyFilter);
+                    if (!applyFilter || listBNode.Nodes.Count > 0)
                     {
                         cameraNode.Nodes.Add(listBNode);
                     }
 
-                    if (filter == null || cameraNode.Nodes.Count > 0)
+                    if (!applyFilter || cameraNode.Nodes.Count > 0)
                     {
                         zoneNode.Nodes.Add(cameraNode);
                     }
                 }
 
-                if (filter == null || zoneNode.Nodes.Count > 0)
+                if (!applyFilter || zoneNode.Nodes.Count > 0)
                 {
                     tvwLoadList.Nodes.Add(zoneNode);
                 }
             }
         }
 
-        private TreeNode CreateListNodes(SortedList<int, LoadListViewLoadItem> loadItems, string nodeText, string filter = null)
+        private TreeNode CreateListNodes(SortedList<int, LoadListViewLoadItem> loadItems, string nodeText, bool applyFilter)
         {
             var listANode = CreateLoadListNode(loadItems, nodeText);
             foreach (var item in loadItems)
             {
                 var chunkName = Entry.EIDToEName(item.Value.ChunkEid);
-                if (!string.IsNullOrEmpty(filter) && item.Value.ChunkEid != 0)
+                if (applyFilter && item.Value.ChunkEid != 0)
                 {
-                    if (!string.Equals(chunkName, filter, StringComparison.InvariantCultureIgnoreCase))
+                    if (!string.Equals(chunkName, txbFilter.Text, StringComparison.InvariantCultureIgnoreCase))
                     {
                         continue;
                     }
@@ -140,21 +155,22 @@
                 {
                     foreach (var entry in item.Value.Entries)
                     {
-                        if (!string.IsNullOrEmpty(filter) && !string.Equals(entry.Name, filter, StringComparison.InvariantCultureIgnoreCase))
+                        if (applyFilter && !string.Equals(entry.Name, txbFilter.Text, StringComparison.InvariantCultureIgnoreCase))
                         {
                             continue;
                         }
 
                         itemNode.Nodes.Add(new TreeNode($"{entry.Position} - {entry.Name}") { Tag = entry.Name });
                     }
+
+                    if (!applyFilter || itemNode.Nodes.Count > 0)
+                    {
+                        listANode.Nodes.Add(itemNode);
+                    }
                 }
                 else
                 {
                     itemNode.Tag = chunkName;
-                }
-
-                if (filter == null || itemNode.Nodes.Count > 0)
-                {
                     listANode.Nodes.Add(itemNode);
                 }
             }
@@ -210,10 +226,12 @@
                         else
                         {
                             var itemAsChunk = _nsf.Chunks[itemAsChunkIndex.Value];
-                            var loadItem = new LoadListViewLoadItem();
-                            loadItem.ChunkEid = itemEid;
-                            loadItem.ChunkIndex = itemAsChunkIndex.Value;
-                            loadItem.ChunkType = itemAsChunk.Type;
+                            var loadItem = new LoadListViewLoadItem
+                            {
+                                ChunkEid = itemEid,
+                                ChunkIndex = itemAsChunkIndex.Value,
+                                ChunkType = itemAsChunk.Type
+                            };
                             treeLoadList.Add(itemAsChunkIndex.Value, loadItem);
                         }
 
@@ -239,10 +257,12 @@
                     }
                     else
                     {
-                        var loadItem = new LoadListViewLoadItem();
-                        loadItem.ChunkEid = itemEid;
-                        loadItem.ChunkIndex = chunkForItemIndex.Value;
-                        loadItem.ChunkType = chunkForItem.Type;
+                        var loadItem = new LoadListViewLoadItem
+                        {
+                            ChunkEid = itemEid,
+                            ChunkIndex = chunkForItemIndex.Value,
+                            ChunkType = chunkForItem.Type
+                        };
                         loadItem.Entries.Add(new LoadListViewLoadItemEntry
                         {
                             Name = itemAsEntry.EName,
@@ -255,13 +275,13 @@
             }
         }
 
-        private void AddMenu(string text, ControllerMenuDelegate proc)
+        private void AddContextMenu(string text, ControllerMenuDelegate proc)
         {
-            void handler(object sender, EventArgs e)
+            void Handler(object sender, EventArgs e)
             {
                 try
                 {
-                    ErrorManager.EnterSubject(new Object());
+                    ErrorManager.EnterSubject(new object());
                     proc();
                 }
                 catch (GUIException ex)
@@ -273,7 +293,7 @@
                     ErrorManager.ExitSubject();
                 }
             }
-            _nodeContextMenu.MenuItems.Add(text, handler);
+            _nodeContextMenu.MenuItems.Add(text, Handler);
         }
 
         private void tvwLoadList_MouseUp(object sender, MouseEventArgs e)
@@ -285,6 +305,14 @@
                 {
                     _nodeContextMenu.Show(tvwLoadList, e.Location);
                 }
+            }
+        }
+
+        private void tvwLoadList_AfterExpand(object sender, TreeViewEventArgs e)
+        {
+            if (e.Node.Nodes.Count == 1)
+            {
+                e.Node.Nodes[0].Expand();
             }
         }
 
@@ -385,9 +413,10 @@
             return chunkText;
         }
 
-        private void btnRefresh_Click(object sender, System.EventArgs e)
+        private void btnRefresh_Click(object sender, EventArgs e)
         {
-            InitTreeView();
+            SetLoadListTreeData();
+            SetTreeViewNodes();
         }
 
         private void txtInput_KeyDown(object sender, KeyEventArgs e)
@@ -398,7 +427,7 @@
             }
 
             e.Handled = true;
-            SetTreeViewNodes(txbFilter.Text);
+            SetTreeViewNodes(txbFilter.Text != string.Empty);
         }
 
         private void txtInput_KeyPress(object sender, KeyPressEventArgs e)
@@ -409,58 +438,29 @@
                 e.Handled = true;
             }
         }
-    }
 
-    public class LoadListViewZone
-    {
-        public LoadListViewZone()
+        private void btnExpandTree_Click(object sender, EventArgs e)
         {
-            Cameras = new List<LoadListViewCamera>();
+            tvwLoadList.Visible = false;
+            tvwLoadList.ExpandAll();
+            tvwLoadList.Visible = true;
+
+            if (tvwLoadList.Nodes.Count > 0)
+            {
+                tvwLoadList.Nodes[0].EnsureVisible();
+            }
         }
 
-        public string Zone { get; set; }
-
-        public List<LoadListViewCamera> Cameras { get; set; }
-    }
-
-    public class LoadListViewCamera
-    {
-        public LoadListViewCamera()
+        private void btnCollapseTree_Click(object sender, EventArgs e)
         {
-            LoadListA = new SortedList<int, LoadListViewLoadItem>();
-            LoadListB = new SortedList<int, LoadListViewLoadItem>();
+            tvwLoadList.Visible = false;
+            tvwLoadList.CollapseAll();
+            tvwLoadList.Visible = true;
+
+            if (tvwLoadList.Nodes.Count > 0)
+            {
+                tvwLoadList.Nodes[0].EnsureVisible();
+            }
         }
-
-        public SortedList<int, LoadListViewLoadItem> LoadListA { get; set; }
-
-        public SortedList<int, LoadListViewLoadItem> LoadListB { get; set; }
-    }
-
-    public class LoadListViewLoadItem
-    {
-        public LoadListViewLoadItem()
-        {
-            LoadCount = 1;
-            Entries = new List<LoadListViewLoadItemEntry>();
-        }
-
-        public int ChunkEid { get; set; }
-
-        public short ChunkType { get; set; }
-
-        public int ChunkIndex { get; set; }
-
-        public List<LoadListViewLoadItemEntry> Entries { get; set; }
-
-        public int LoadCount { get; set; }
-    }
-
-    public class LoadListViewLoadItemEntry
-    {
-        public short? Position { get; set; }
-
-        public string Name { get; set; }
-
-        public int ListIndex { get; set; }
     }
 }

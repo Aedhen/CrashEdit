@@ -34,6 +34,8 @@
             this.btnRefresh = new DarkUI.Controls.DarkButton();
             this.txbFilter = new DarkUI.Controls.DarkTextBox();
             this.lblFilter = new DarkUI.Controls.DarkLabel();
+            this.btnExpandTree = new DarkUI.Controls.DarkButton();
+            this.btnCollapseTree = new DarkUI.Controls.DarkButton();
             this.SuspendLayout();
             // 
             // tvwLoadList
@@ -64,7 +66,7 @@
             this.txbFilter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
             this.txbFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txbFilter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.txbFilter.Location = new System.Drawing.Point(159, 15);
+            this.txbFilter.Location = new System.Drawing.Point(404, 15);
             this.txbFilter.Name = "txbFilter";
             this.txbFilter.Size = new System.Drawing.Size(100, 20);
             this.txbFilter.TabIndex = 2;
@@ -74,22 +76,44 @@
             this.lblFilter.AutoSize = true;
             this.lblFilter.Font = new System.Drawing.Font("Arial", 9F);
             this.lblFilter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lblFilter.Location = new System.Drawing.Point(119, 16);
+            this.lblFilter.Location = new System.Drawing.Point(364, 16);
             this.lblFilter.Name = "lblFilter";
             this.lblFilter.Size = new System.Drawing.Size(34, 15);
             this.lblFilter.TabIndex = 3;
             this.lblFilter.Text = "Filter";
+            // 
+            // btnExpandTree
+            // 
+            this.btnExpandTree.Location = new System.Drawing.Point(110, 12);
+            this.btnExpandTree.Name = "btnExpandTree";
+            this.btnExpandTree.Padding = new System.Windows.Forms.Padding(5);
+            this.btnExpandTree.Size = new System.Drawing.Size(75, 23);
+            this.btnExpandTree.TabIndex = 4;
+            this.btnExpandTree.Text = "Expand";
+            this.btnExpandTree.Click += new System.EventHandler(this.btnExpandTree_Click);
+            // 
+            // btnCollapseTree
+            // 
+            this.btnCollapseTree.Location = new System.Drawing.Point(191, 12);
+            this.btnCollapseTree.Name = "btnCollapseTree";
+            this.btnCollapseTree.Padding = new System.Windows.Forms.Padding(5);
+            this.btnCollapseTree.Size = new System.Drawing.Size(75, 23);
+            this.btnCollapseTree.TabIndex = 5;
+            this.btnCollapseTree.Text = "Collapse";
+            this.btnCollapseTree.Click += new System.EventHandler(this.btnCollapseTree_Click);
             // 
             // LoadListView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(516, 566);
+            this.Controls.Add(this.btnCollapseTree);
+            this.Controls.Add(this.btnExpandTree);
             this.Controls.Add(this.lblFilter);
             this.Controls.Add(this.txbFilter);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.tvwLoadList);
-            this.Name = "Load List";
+            this.Name = "LoadListView";
             this.Text = "Load List";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -102,5 +126,7 @@
         private DarkUI.Controls.DarkButton btnRefresh;
         private DarkUI.Controls.DarkTextBox txbFilter;
         private DarkUI.Controls.DarkLabel lblFilter;
+        private DarkUI.Controls.DarkButton btnExpandTree;
+        private DarkUI.Controls.DarkButton btnCollapseTree;
     }
 }
