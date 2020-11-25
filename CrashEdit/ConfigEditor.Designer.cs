@@ -56,7 +56,9 @@
             this.chkAnimViewPanel = new MetroFramework.Controls.MetroCheckBox();
             this.fraGeneral = new System.Windows.Forms.GroupBox();
             this.fraExternalTools = new System.Windows.Forms.GroupBox();
-            this.txtExternalToolsDir = new MetroFramework.Controls.MetroLabel();
+            this.lblExportGoolDir = new MetroFramework.Controls.MetroLabel();
+            this.txbExportGoolDir = new MetroFramework.Controls.MetroTextBox();
+            this.lblExternalToolsDir = new MetroFramework.Controls.MetroLabel();
             this.txbExternalToolsDir = new MetroFramework.Controls.MetroTextBox();
             this.fraFind = new System.Windows.Forms.GroupBox();
             this.chkFindWrap = new MetroFramework.Controls.MetroCheckBox();
@@ -207,7 +209,7 @@
             // chkOldPatchNSD
             // 
             this.chkOldPatchNSD.ForeColor = System.Drawing.Color.MediumSpringGreen;
-            this.chkOldPatchNSD.Location = new System.Drawing.Point(15, 147);
+            this.chkOldPatchNSD.Location = new System.Drawing.Point(15, 228);
             this.chkOldPatchNSD.Name = "chkOldPatchNSD";
             this.chkOldPatchNSD.Size = new System.Drawing.Size(335, 16);
             this.chkOldPatchNSD.TabIndex = 9;
@@ -223,7 +225,7 @@
             this.chkPatchNSDSavesNSF.Checked = true;
             this.chkPatchNSDSavesNSF.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkPatchNSDSavesNSF.ForeColor = System.Drawing.SystemColors.Control;
-            this.chkPatchNSDSavesNSF.Location = new System.Drawing.Point(15, 124);
+            this.chkPatchNSDSavesNSF.Location = new System.Drawing.Point(15, 205);
             this.chkPatchNSDSavesNSF.Name = "chkPatchNSDSavesNSF";
             this.chkPatchNSDSavesNSF.Size = new System.Drawing.Size(280, 16);
             this.chkPatchNSDSavesNSF.TabIndex = 8;
@@ -235,7 +237,7 @@
             // 
             // chkDeleteInvalidEntries
             // 
-            this.chkDeleteInvalidEntries.Location = new System.Drawing.Point(15, 102);
+            this.chkDeleteInvalidEntries.Location = new System.Drawing.Point(15, 183);
             this.chkDeleteInvalidEntries.Name = "chkDeleteInvalidEntries";
             this.chkDeleteInvalidEntries.Size = new System.Drawing.Size(309, 16);
             this.chkDeleteInvalidEntries.TabIndex = 5;
@@ -290,7 +292,7 @@
             this.cmdReset.FontSize = MetroFramework.MetroButtonSize.Medium;
             this.cmdReset.FontWeight = MetroFramework.MetroButtonWeight.Regular;
             this.cmdReset.ForeColor = System.Drawing.Color.DeepSkyBlue;
-            this.cmdReset.Location = new System.Drawing.Point(530, 383);
+            this.cmdReset.Location = new System.Drawing.Point(530, 463);
             this.cmdReset.Name = "cmdReset";
             this.cmdReset.Size = new System.Drawing.Size(99, 25);
             this.cmdReset.TabIndex = 10;
@@ -362,7 +364,7 @@
             // chkCustomCrates
             // 
             this.chkCustomCrates.ForeColor = System.Drawing.Color.MediumSpringGreen;
-            this.chkCustomCrates.Location = new System.Drawing.Point(15, 170);
+            this.chkCustomCrates.Location = new System.Drawing.Point(15, 251);
             this.chkCustomCrates.Name = "chkCustomCrates";
             this.chkCustomCrates.Size = new System.Drawing.Size(231, 16);
             this.chkCustomCrates.TabIndex = 15;
@@ -399,36 +401,82 @@
             this.fraGeneral.ForeColor = System.Drawing.SystemColors.Window;
             this.fraGeneral.Location = new System.Drawing.Point(3, 3);
             this.fraGeneral.Name = "fraGeneral";
-            this.fraGeneral.Size = new System.Drawing.Size(521, 198);
+            this.fraGeneral.Size = new System.Drawing.Size(521, 278);
             this.fraGeneral.TabIndex = 18;
             this.fraGeneral.TabStop = false;
             this.fraGeneral.Text = "General";
             // 
             // fraExternalTools
             // 
-            this.fraExternalTools.Controls.Add(this.txtExternalToolsDir);
+            this.fraExternalTools.Controls.Add(this.lblExportGoolDir);
+            this.fraExternalTools.Controls.Add(this.txbExportGoolDir);
+            this.fraExternalTools.Controls.Add(this.lblExternalToolsDir);
             this.fraExternalTools.Controls.Add(this.txbExternalToolsDir);
             this.fraExternalTools.Font = new System.Drawing.Font("Arial", 9F);
             this.fraExternalTools.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraExternalTools.Location = new System.Drawing.Point(301, 22);
+            this.fraExternalTools.Location = new System.Drawing.Point(15, 81);
             this.fraExternalTools.Name = "fraExternalTools";
-            this.fraExternalTools.Size = new System.Drawing.Size(201, 74);
+            this.fraExternalTools.Size = new System.Drawing.Size(309, 81);
             this.fraExternalTools.TabIndex = 17;
             this.fraExternalTools.TabStop = false;
-            this.fraExternalTools.Text = "External Tools";
+            this.fraExternalTools.Text = "(Default) Directories";
             // 
-            // txtExternalToolsDir
+            // lblExportGoolDir
             // 
-            this.txtExternalToolsDir.AutoSize = true;
-            this.txtExternalToolsDir.FontWeight = MetroFramework.MetroLabelWeight.Regular;
-            this.txtExternalToolsDir.ForeColor = System.Drawing.Color.Gainsboro;
-            this.txtExternalToolsDir.Location = new System.Drawing.Point(6, 20);
-            this.txtExternalToolsDir.Name = "txtExternalToolsDir";
-            this.txtExternalToolsDir.Size = new System.Drawing.Size(65, 19);
-            this.txtExternalToolsDir.TabIndex = 1;
-            this.txtExternalToolsDir.Text = "Directory";
-            this.txtExternalToolsDir.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.txtExternalToolsDir.UseCustomBackColor = true;
+            this.lblExportGoolDir.AutoSize = true;
+            this.lblExportGoolDir.FontWeight = MetroFramework.MetroLabelWeight.Regular;
+            this.lblExportGoolDir.ForeColor = System.Drawing.Color.Gainsboro;
+            this.lblExportGoolDir.Location = new System.Drawing.Point(6, 49);
+            this.lblExportGoolDir.Name = "lblExportGoolDir";
+            this.lblExportGoolDir.Size = new System.Drawing.Size(91, 19);
+            this.lblExportGoolDir.TabIndex = 3;
+            this.lblExportGoolDir.Text = "Export GOOL";
+            this.lblExportGoolDir.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.lblExportGoolDir.UseCustomBackColor = true;
+            // 
+            // txbExportGoolDir
+            // 
+            // 
+            // 
+            // 
+            this.txbExportGoolDir.CustomButton.Image = null;
+            this.txbExportGoolDir.CustomButton.Location = new System.Drawing.Point(167, 1);
+            this.txbExportGoolDir.CustomButton.Name = "";
+            this.txbExportGoolDir.CustomButton.Size = new System.Drawing.Size(21, 21);
+            this.txbExportGoolDir.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
+            this.txbExportGoolDir.CustomButton.TabIndex = 1;
+            this.txbExportGoolDir.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.txbExportGoolDir.CustomButton.UseSelectable = true;
+            this.txbExportGoolDir.CustomButton.Visible = false;
+            this.txbExportGoolDir.Lines = new string[0];
+            this.txbExportGoolDir.Location = new System.Drawing.Point(114, 49);
+            this.txbExportGoolDir.MaxLength = 32767;
+            this.txbExportGoolDir.Name = "txbExportGoolDir";
+            this.txbExportGoolDir.PasswordChar = '\0';
+            this.txbExportGoolDir.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.txbExportGoolDir.SelectedText = "";
+            this.txbExportGoolDir.SelectionLength = 0;
+            this.txbExportGoolDir.SelectionStart = 0;
+            this.txbExportGoolDir.ShortcutsEnabled = true;
+            this.txbExportGoolDir.Size = new System.Drawing.Size(189, 23);
+            this.txbExportGoolDir.TabIndex = 2;
+            this.txbExportGoolDir.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.txbExportGoolDir.UseSelectable = true;
+            this.txbExportGoolDir.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
+            this.txbExportGoolDir.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
+            // 
+            // lblExternalToolsDir
+            // 
+            this.lblExternalToolsDir.AutoSize = true;
+            this.lblExternalToolsDir.FontWeight = MetroFramework.MetroLabelWeight.Regular;
+            this.lblExternalToolsDir.ForeColor = System.Drawing.Color.Gainsboro;
+            this.lblExternalToolsDir.Location = new System.Drawing.Point(6, 20);
+            this.lblExternalToolsDir.Name = "lblExternalToolsDir";
+            this.lblExternalToolsDir.Size = new System.Drawing.Size(92, 19);
+            this.lblExternalToolsDir.TabIndex = 1;
+            this.lblExternalToolsDir.Text = "External Tools";
+            this.lblExternalToolsDir.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.lblExternalToolsDir.UseCustomBackColor = true;
             // 
             // txbExternalToolsDir
             // 
@@ -445,7 +493,7 @@
             this.txbExternalToolsDir.CustomButton.UseSelectable = true;
             this.txbExternalToolsDir.CustomButton.Visible = false;
             this.txbExternalToolsDir.Lines = new string[0];
-            this.txbExternalToolsDir.Location = new System.Drawing.Point(6, 45);
+            this.txbExternalToolsDir.Location = new System.Drawing.Point(114, 20);
             this.txbExternalToolsDir.MaxLength = 32767;
             this.txbExternalToolsDir.Name = "txbExternalToolsDir";
             this.txbExternalToolsDir.PasswordChar = '\0';
@@ -460,7 +508,6 @@
             this.txbExternalToolsDir.UseSelectable = true;
             this.txbExternalToolsDir.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
             this.txbExternalToolsDir.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
-            this.txbExternalToolsDir.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txbExternalToolsDir_KeyUp);
             // 
             // fraFind
             // 
@@ -499,7 +546,7 @@
             this.fra3dViewer.Controls.Add(this.chkDetailedCollision);
             this.fra3dViewer.Font = new System.Drawing.Font("Arial", 9F);
             this.fra3dViewer.ForeColor = System.Drawing.SystemColors.Window;
-            this.fra3dViewer.Location = new System.Drawing.Point(3, 207);
+            this.fra3dViewer.Location = new System.Drawing.Point(3, 287);
             this.fra3dViewer.Name = "fra3dViewer";
             this.fra3dViewer.Size = new System.Drawing.Size(521, 201);
             this.fra3dViewer.TabIndex = 19;
@@ -522,7 +569,7 @@
             this.Controls.Add(this.cmdReset);
             this.ForeColor = System.Drawing.SystemColors.Window;
             this.Name = "ConfigEditor";
-            this.Size = new System.Drawing.Size(639, 418);
+            this.Size = new System.Drawing.Size(639, 491);
             this.fraLang.ResumeLayout(false);
             this.fraClearCol.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picClearCol)).EndInit();
@@ -572,6 +619,8 @@
         private System.Windows.Forms.GroupBox fraExternalTools;
         private MetroFramework.Controls.MetroTextBox txbExternalToolsDir;
         private MetroFramework.Controls.MetroContextMenu metroContextMenu1;
-        private MetroFramework.Controls.MetroLabel txtExternalToolsDir;
+        private MetroFramework.Controls.MetroLabel lblExternalToolsDir;
+        private MetroFramework.Controls.MetroLabel lblExportGoolDir;
+        private MetroFramework.Controls.MetroTextBox txbExportGoolDir;
     }
 }

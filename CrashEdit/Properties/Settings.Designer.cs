@@ -262,5 +262,17 @@ namespace CrashEdit.Properties {
                 this["ExternalToolDir"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ExportGoolDefaultDir {
+            get {
+                return ((string)(this["ExportGoolDefaultDir"]));
+            }
+            set {
+                this["ExportGoolDefaultDir"] = value;
+            }
+        }
     }
 }

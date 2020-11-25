@@ -50,6 +50,9 @@ namespace CrashEdit
             cmdReset.Text = Resources.Config_cmdReset;
             cmdShortcuts.Text = Resources.Config_cmdHelp;
             txbExternalToolsDir.Text = Settings.Default.ExternalToolDir;
+
+            txbExternalToolsDir.KeyUp += txbExternalToolsDir_KeyUp;
+            txbExportGoolDir.KeyUp += txbExportGoolDir_KeyUp;
         }
 
         private void dpdLang_SelectedIndexChanged(object sender, EventArgs e)
@@ -201,6 +204,12 @@ namespace CrashEdit
         private void txbExternalToolsDir_KeyUp(object sender, EventArgs e)
         {
             Settings.Default.ExternalToolDir = txbExternalToolsDir.Text;
+            Settings.Default.Save();
+        }
+
+        private void txbExportGoolDir_KeyUp(object sender, EventArgs e)
+        {
+            Settings.Default.ExportGoolDefaultDir = txbExportGoolDir.Text;
             Settings.Default.Save();
         }
     }

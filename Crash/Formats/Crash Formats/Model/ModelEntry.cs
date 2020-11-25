@@ -171,6 +171,25 @@ namespace Crash
         public int ScaleX => BitConv.FromInt32(Info, 0);
         public int ScaleY => BitConv.FromInt32(Info, 4);
         public int ScaleZ => BitConv.FromInt32(Info, 8);
+        public List<int> TextureReferenceEids
+        {
+            get
+            {
+                var textureReferences = new List<int>();
+                for (int i = 0; i < 8; i++)
+                {
+                    var textureEid = BitConv.FromInt32(Info, 12 + (i * 4));
+                    if (textureEid == 0)
+                    {
+                        break;
+                    }
+
+                    textureReferences.Add(textureEid);
+                }
+
+                return textureReferences;
+            }
+        }
         public int VertexCount => BitConv.FromInt32(Info, 0x38);
         public int TPAGCount => BitConv.FromInt32(Info, 0x40);
         public int PolyCount => BitConv.FromInt32(Info, 0x44);
