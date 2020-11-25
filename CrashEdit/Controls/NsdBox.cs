@@ -17,8 +17,8 @@
         private readonly NSF _nsf;
         private readonly string _filename;
         private List<SpawnPointListModel> _spawnPointList;
-        public LoadListView frmLoadListView = null;
-        public DrawListView frmDrawListView = null;
+        public LoadListView frmLoadListView;
+        public DrawListView frmDrawListView;
 
         public NsdBox(NSD nsd, NSF nsf, string filename)
         {
@@ -36,12 +36,14 @@
             foreach (var spawn in _nsd.Spawns)
             {
                 var zoneEntry = _nsf.FindEID<ZoneEntry>(spawn.ZoneEID);
-                _spawnPointList.Add(new SpawnPointListModel
+                var spawnPoint = new SpawnPointListModel
                 {
                     OriginalZoneEid = spawn.ZoneEID,
                     ZoneName = Entry.EIDToEName(spawn.ZoneEID),
-                    Position = CalculateSpawnPositionInZone(new Position(spawn.SpawnX, spawn.SpawnY, spawn.SpawnZ), zoneEntry)
-                });
+                    Position = CalculateSpawnPositionInZone(new SpawnPosition(spawn.SpawnX, spawn.SpawnY, spawn.SpawnZ), zoneEntry)
+                };
+
+                _spawnPointList.Add(spawnPoint);
             }
 
             var listItems = new ObservableCollection<DarkListItem>();
@@ -75,9 +77,22 @@
             txbName.Text = selectedGlobalSpawn.ZoneName;
             txbName.TextChanged += txbName_TextChanged;
 
-            numX.Value = (decimal)selectedGlobalSpawn.Position.X;
-            numY.Value = (decimal)selectedGlobalSpawn.Position.Y;
-            numZ.Value = (decimal)selectedGlobalSpawn.Position.Z;
+            if (selectedGlobalSpawn.Position != null)
+            {
+                numX.Value = selectedGlobalSpawn.Position.X;
+                numY.Value = selectedGlobalSpawn.Position.Y;
+                numZ.Value = selectedGlobalSpawn.Position.Z;
+            }
+            else
+            {
+                numX.Enabled = false;
+                numY.Enabled = false;
+                numZ.Enabled = false;
+                numX.Value = 0;
+                numY.Value = 0;
+                numZ.Value = 0;
+            }
+
         }
 
         private void txbName_TextChanged(object sender, EventArgs e)
@@ -111,9 +126,9 @@
 
                     _spawnPointList[i].OriginalZoneEid = eid;
                     spawnToUpdate.ZoneEID = eid;
-                    spawnToUpdate.SpawnX = CalculateGlobalSpawnCoordinate((int)_spawnPointList[i].Position.X, zoneEntry.XOffset);
-                    spawnToUpdate.SpawnY = CalculateGlobalSpawnCoordinate((int)_spawnPointList[i].Position.Y, zoneEntry.YOffset);
-                    spawnToUpdate.SpawnZ = CalculateGlobalSpawnCoordinate((int)_spawnPointList[i].Position.Z, zoneEntry.ZOffset);
+                    spawnToUpdate.SpawnX = CalculateGlobalSpawnCoordinate(_spawnPointList[i].Position.X, zoneEntry.XOffset);
+                    spawnToUpdate.SpawnY = CalculateGlobalSpawnCoordinate(_spawnPointList[i].Position.Y, zoneEntry.YOffset);
+                    spawnToUpdate.SpawnZ = CalculateGlobalSpawnCoordinate(_spawnPointList[i].Position.Z, zoneEntry.ZOffset);
                 }
                 catch (Exception ex)
                 {
@@ -127,7 +142,9 @@
             var inputX = (int)numX.Value;
             var selectedIndex = lstSpawnPoints.SelectedIndices[0];
             var oldPosition = _spawnPointList[selectedIndex].Position;
-            _spawnPointList[selectedIndex].Position = new Position(inputX, oldPosition.Y, oldPosition.Z);
+            _spawnPointList[selectedIndex].Position = oldPosition == null
+                ? null
+                : new SpawnPosition(inputX, oldPosition.Y, oldPosition.Z);
         }
 
         private void numY_ValueChanged(object sender, EventArgs e)
@@ -135,7 +152,9 @@
             var inputY = (int)numY.Value;
             var selectedIndex = lstSpawnPoints.SelectedIndices[0];
             var oldPosition = _spawnPointList[selectedIndex].Position;
-            _spawnPointList[selectedIndex].Position = new Position(oldPosition.X, inputY, oldPosition.Z);
+            _spawnPointList[selectedIndex].Position = oldPosition == null 
+                ? null 
+                : new SpawnPosition(oldPosition.X, inputY, oldPosition.Z);
         }
 
         private void numZ_ValueChanged(object sender, EventArgs e)
@@ -143,15 +162,22 @@
             var inputZ = (int)numZ.Value;
             var selectedIndex = lstSpawnPoints.SelectedIndices[0];
             var oldPosition = _spawnPointList[selectedIndex].Position;
-            _spawnPointList[selectedIndex].Position = new Position(oldPosition.X, oldPosition.Y, inputZ);
+            _spawnPointList[selectedIndex].Position = oldPosition == null
+                ? null
+                : new SpawnPosition(oldPosition.X, oldPosition.Y, inputZ);
         }
 
-        private Position CalculateSpawnPositionInZone(Position globalSpawnPosition, ZoneEntry zone)
+        private SpawnPosition CalculateSpawnPositionInZone(SpawnPosition globalSpawnPosition, ZoneEntry zone)
         {
-            var zoneSpawnX = CalculateSpawnCoordinateInZone((int)globalSpawnPosition.X, zone.XOffset);
-            var zoneSpawnY = CalculateSpawnCoordinateInZone((int)globalSpawnPosition.Y, zone.YOffset);
-            var zoneSpawnZ = CalculateSpawnCoordinateInZone((int)globalSpawnPosition.Z, zone.ZOffset);
-            return new Position(zoneSpawnX, zoneSpawnY, zoneSpawnZ);
+            if (zone == null)
+            {
+                return null;
+            }
+
+            var zoneSpawnX = CalculateSpawnCoordinateInZone(globalSpawnPosition.X, zone.XOffset);
+            var zoneSpawnY = CalculateSpawnCoordinateInZone(globalSpawnPosition.Y, zone.YOffset);
+            var zoneSpawnZ = CalculateSpawnCoordinateInZone(globalSpawnPosition.Z, zone.ZOffset);
+            return new SpawnPosition(zoneSpawnX, zoneSpawnY, zoneSpawnZ);
         }
 
         private int CalculateSpawnCoordinateInZone(int globalSpawnCoordinate, int zoneCoordinate)
@@ -211,6 +237,22 @@
 
         public string ZoneName { get; set; }
 
-        public Position Position { get; set; }
+        public SpawnPosition Position { get; set; }
+    }
+
+    public class SpawnPosition
+    {
+        public SpawnPosition(int x, int y, int z)
+        {
+            X = x;
+            Y = y;
+            Z = z;
+        }
+
+        public int X { get; set; }
+
+        public int Y { get; set; }
+
+        public int Z { get; set; }
     }
 }
