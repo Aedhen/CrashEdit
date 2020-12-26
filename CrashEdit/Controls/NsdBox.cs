@@ -113,7 +113,7 @@
                     var zoneEntry = _nsf.FindEID<ZoneEntry>(eid);
                     if (zoneEntry == null)
                     {
-                        DarkMessageBox.ShowError($"Invalid zone name: zone {txbName.Text} not found in NSF. Changes for this spawn are not saved.", "Zone");
+                        DarkMessageBox.ShowError($"Invalid zone name: zone {_spawnPointList[i].ZoneName} not found in NSF. Changes for this spawn are not saved.", "Zone");
                         continue;
                     }
 

@@ -90,7 +90,7 @@ namespace CrashEdit
 
         private void Find()
         {
-            var input = txbFindBytes.Text;
+            var input = txbFindBytes.Text.Trim(' ');
             var splitInput = SplitHexString(input, 2);
             var findValues = splitInput.Select(x => Convert.ToByte(x, 16)).ToList();
 

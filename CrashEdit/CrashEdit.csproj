@@ -111,6 +111,12 @@
     </Compile>
     <Compile Include="Controls\CommonZoneEntryViewer.cs" />
     <Compile Include="ExternalTool.cs" />
+    <Compile Include="Forms\EidConvertWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\EidConvertWindow.Designer.cs">
+      <DependentUpon>EidConvertWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Forms\DrawListViewCamera.cs" />
     <Compile Include="Models\Forms\DrawListViewDrawItemEntity.cs" />
     <Compile Include="Models\Forms\DrawListViewZone.cs" />
@@ -444,6 +450,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\SoundBox.resx">
       <DependentUpon>SoundBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EidConvertWindow.resx">
+      <DependentUpon>EidConvertWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ErrorReporter.resx">
       <DependentUpon>ErrorReporter.cs</DependentUpon>

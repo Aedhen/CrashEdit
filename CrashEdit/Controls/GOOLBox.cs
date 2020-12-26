@@ -4,6 +4,9 @@ using System.Drawing;
 
 namespace CrashEdit
 {
+    using System.Linq;
+    using System.Text;
+
     public sealed class GOOLBox : UserControl
     {
         private ListBox lstCode;
@@ -23,6 +26,7 @@ namespace CrashEdit
             lstCode.Items.Add(string.Format("Stack Start: {0} ({1})", (ObjectFields)goolentry.StackStart, (goolentry.StackStart * 4 + GOOLInterpreter.GetProcessOff(goolentry.Version)).TransformedString()));
             lstCode.Items.Add($"Interrupt Count: {goolentry.EventCount}");
             lstCode.Items.Add($"Entry Count: {goolentry.EntryCount}");
+            lstCode.KeyDown += lstCode_KeyDown;
             if (goolentry.Format == 1)
             {
                 lstCode.Items.Add("");
@@ -141,6 +145,20 @@ namespace CrashEdit
             }
 
             Controls.Add(lstCode);
+        }
+
+        private void lstCode_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.C && e.Control)
+            {
+                var copyValue = new StringBuilder();
+                foreach (string item in lstCode.Items)
+                {
+                    copyValue.AppendLine(item);
+                }
+
+                Clipboard.SetText(copyValue.ToString());
+            }
         }
     }
 }

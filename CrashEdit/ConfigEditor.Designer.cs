@@ -64,6 +64,7 @@
             this.chkFindWrap = new MetroFramework.Controls.MetroCheckBox();
             this.fra3dViewer = new System.Windows.Forms.GroupBox();
             this.metroContextMenu1 = new MetroFramework.Controls.MetroContextMenu(this.components);
+            this.btnEidConvert = new MetroFramework.Controls.MetroButton();
             this.fraLang.SuspendLayout();
             this.fraClearCol.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picClearCol)).BeginInit();
@@ -558,11 +559,28 @@
             this.metroContextMenu1.Name = "metroContextMenu1";
             this.metroContextMenu1.Size = new System.Drawing.Size(61, 4);
             // 
+            // btnEidConvert
+            // 
+            this.btnEidConvert.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnEidConvert.FontSize = MetroFramework.MetroButtonSize.Medium;
+            this.btnEidConvert.FontWeight = MetroFramework.MetroButtonWeight.Regular;
+            this.btnEidConvert.ForeColor = System.Drawing.SystemColors.InactiveCaption;
+            this.btnEidConvert.Location = new System.Drawing.Point(530, 43);
+            this.btnEidConvert.Name = "btnEidConvert";
+            this.btnEidConvert.Size = new System.Drawing.Size(99, 25);
+            this.btnEidConvert.TabIndex = 20;
+            this.btnEidConvert.Text = "EID convert";
+            this.btnEidConvert.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.btnEidConvert.UseCustomBackColor = true;
+            this.btnEidConvert.UseSelectable = true;
+            this.btnEidConvert.Click += new System.EventHandler(this.btnEidConvert_Click);
+            // 
             // ConfigEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.Controls.Add(this.btnEidConvert);
             this.Controls.Add(this.fra3dViewer);
             this.Controls.Add(this.fraGeneral);
             this.Controls.Add(this.cmdShortcuts);
@@ -622,5 +640,6 @@
         private MetroFramework.Controls.MetroLabel lblExternalToolsDir;
         private MetroFramework.Controls.MetroLabel lblExportGoolDir;
         private MetroFramework.Controls.MetroTextBox txbExportGoolDir;
+        private MetroFramework.Controls.MetroButton btnEidConvert;
     }
 }

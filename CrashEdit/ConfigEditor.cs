@@ -11,7 +11,8 @@ namespace CrashEdit
     {
         public static readonly List<string> Languages = new List<string> { "en", "ja" };
 
-        public ShortcutsWindow frmShortcuts = null;
+        public ShortcutsWindow frmShortcuts;
+        public EidConvertWindow frmEidConvert;
 
         public ConfigEditor()
         {
@@ -211,6 +212,23 @@ namespace CrashEdit
         {
             Settings.Default.ExportGoolDefaultDir = txbExportGoolDir.Text;
             Settings.Default.Save();
+        }
+
+        private void btnEidConvert_Click(object sender, EventArgs e)
+        {
+            if (frmEidConvert == null || frmEidConvert.IsDisposed)
+            {
+                frmEidConvert = new EidConvertWindow();
+            }
+
+            if (!frmEidConvert.Visible)
+            {
+                frmEidConvert.Show();
+            }
+            else
+            {
+                frmEidConvert.Activate();
+            }
         }
     }
 }
