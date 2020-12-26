@@ -128,7 +128,16 @@ namespace CrashEdit.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Display frame collision by default.
+        ///   Separate the panel in FrameBox に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_chkAnimViewPanel {
+            get {
+                return ResourceManager.GetString("Config_chkAnimViewPanel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Display frame collision by default に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_chkCollisionDisplay {
             get {
@@ -1926,7 +1935,16 @@ namespace CrashEdit.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Close.
+        ///   Texture Viewer [{0}] - Right-click to save texture region to file に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string TextureViewer_Title {
+            get {
+                return ResourceManager.GetString("TextureViewer_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Close に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Toolbar_Close {
             get {
