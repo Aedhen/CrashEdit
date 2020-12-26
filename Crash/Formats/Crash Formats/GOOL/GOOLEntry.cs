@@ -127,7 +127,6 @@ namespace Crash
         public int EventCount => BitConv.FromInt32(Header, 16);
         public int EntryCount => BitConv.FromInt32(Header, 20);
 
-
         public IList<GOOLInstruction> Instructions => instructions;
 
         public IList<int> Externals => externals;

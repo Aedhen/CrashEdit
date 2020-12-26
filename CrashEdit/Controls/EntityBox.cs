@@ -13,11 +13,8 @@ namespace CrashEdit
         private Controller controller;
         private Entity entity;
 
-        private bool positiondirty;
         private int positionindex;
-        private bool settingdirty;
         private int settingindex;
-        private bool victimdirty;
         private int victimindex;
         private int loadlistarowindex;
         private int loadlistaeidindex;
@@ -31,6 +28,11 @@ namespace CrashEdit
         private int neighborsettingindex;
         private int fovframeindex;
         private int fovindex;
+
+        private Timer argtexttimer;
+
+        internal Stack<bool> dirty = new Stack<bool>();
+        internal bool Dirty => dirty.Count > 0 && dirty.Peek();
 
         internal void MainInit()
         {
@@ -71,7 +73,6 @@ namespace CrashEdit
             chkBonusBoxCount.Text = Resources.EntityBox_ChkBonusBoxCount;
             fraID.Text = Resources.EntityBox_FraID;
             fraType.Text = Resources.EntityBox_FraType;
-            fraSubtype.Text = Resources.EntityBox_FraSubtype;
             fraPosition.Text = Resources.EntityBox_FraPosition;
             fraSettings.Text = Resources.EntityBox_FraSettings;
             foreach (Button cmd in this.GetAll(typeof(Button)))
@@ -226,7 +227,19 @@ namespace CrashEdit
             lblMetavalueDrawB.Text = Properties.Resources.EntityBox_lblMetavalueDrawB;
             fraEntityA.Text = Properties.Resources.EntityBox_fraEntityA;
             fraEntityB.Text = Properties.Resources.EntityBox_fraEntityB;
+            lblArgAs.Text = MakeArgAsText();
             chkSettingHex_CheckedChanged(null, null);
+
+            // use a Timer because of PAL switch
+            argtexttimer = new Timer()
+            {
+                Enabled = true,
+                Interval = 40
+            };
+            argtexttimer.Tick += (object sender, EventArgs e) =>
+            {
+                lblArgAs.Text = MakeArgAsText();
+            };
         }
 
         public EntityBox(NewEntityController controller)
@@ -246,6 +259,16 @@ namespace CrashEdit
         private void InvalidateNodes()
         {
             controller.InvalidateNode();
+        }
+
+        internal string MakeArgAsText()
+        {
+            int arg = entity.Settings.Count > 0 ? entity.Settings[settingindex].Value : 0;
+            return string.Format(Resources.EntityBox_lblArgAs,
+                arg / 256F,
+                arg / (float)0x1000 * 360,
+                arg / (OldMainForm.PAL ? 25F : 30F),
+                arg / (256F*400));
         }
 
         private void UpdateName()
@@ -277,7 +300,7 @@ namespace CrashEdit
 
         private void UpdatePosition()
         {
-            positiondirty = true;
+            dirty.Push(true);
             if (positionindex >= entity.Positions.Count)
             {
                 positionindex = entity.Positions.Count-1;
@@ -293,10 +316,10 @@ namespace CrashEdit
             if (positionindex >= entity.Positions.Count)
             {
                 lblPositionIndex.Text = "-- / --";
-                cmdPreviousPosition.Enabled = false;
-                cmdNextPosition.Enabled = false;
-                cmdInsertPosition.Enabled = false;
-                cmdRemovePosition.Enabled = false;
+                cmdPreviousPosition.Enabled =
+                cmdNextPosition.Enabled =
+                cmdInsertPosition.Enabled =
+                cmdRemovePosition.Enabled =
                 cmdInterpolate.Enabled = false;
                 lblX.Enabled = lblY.Enabled = lblZ.Enabled = numX.Enabled = numY.Enabled = numZ.Enabled = false;
             }
@@ -313,7 +336,7 @@ namespace CrashEdit
                 numZ.Value = entity.Positions[positionindex].Z;
                 cmdInterpolate.Enabled = entity.Positions.Count >= 2;
             }
-            positiondirty = false;
+            dirty.Pop();
         }
 
         private void cmdPreviousPosition_Click(object sender,EventArgs e)
@@ -360,7 +383,7 @@ namespace CrashEdit
 
         private void numX_ValueChanged(object sender,EventArgs e)
         {
-            if (!positiondirty)
+            if (!Dirty)
             {
                 EntityPosition pos = entity.Positions[positionindex];
                 entity.Positions[positionindex] = new EntityPosition((short)numX.Value,pos.Y,pos.Z);
@@ -369,7 +392,7 @@ namespace CrashEdit
 
         private void numY_ValueChanged(object sender,EventArgs e)
         {
-            if (!positiondirty)
+            if (!Dirty)
             {
                 EntityPosition pos = entity.Positions[positionindex];
                 entity.Positions[positionindex] = new EntityPosition(pos.X,(short)numY.Value,pos.Z);
@@ -378,7 +401,7 @@ namespace CrashEdit
 
         private void numZ_ValueChanged(object sender,EventArgs e)
         {
-            if (!positiondirty)
+            if (!Dirty)
             {
                 EntityPosition pos = entity.Positions[positionindex];
                 entity.Positions[positionindex] = new EntityPosition(pos.X,pos.Y,(short)numZ.Value);
@@ -387,7 +410,7 @@ namespace CrashEdit
 
         private void UpdateSettings()
         {
-            settingdirty = true;
+            dirty.Push(true);
             if (settingindex >= entity.Settings.Count)
             {
                 settingindex = entity.Settings.Count - 1;
@@ -403,11 +426,10 @@ namespace CrashEdit
             if (settingindex >= entity.Settings.Count)
             {
                 lblSettingIndex.Text = "-- / --";
+                lblArgAs.Enabled =
                 cmdPreviousSetting.Enabled =
                 cmdNextSetting.Enabled =
                 cmdRemoveSetting.Enabled =
-                lblSettingA.Enabled =
-                lblSettingB.Enabled =
                 numSettingA.Enabled =
                 numSettingB.Enabled =
                 numSettingC.Enabled = false;
@@ -415,19 +437,19 @@ namespace CrashEdit
             else
             {
                 lblSettingIndex.Text = $"{settingindex+1} / {entity.Settings.Count}";
+                lblArgAs.Text = MakeArgAsText();
                 cmdPreviousSetting.Enabled = settingindex > 0;
                 cmdNextSetting.Enabled = settingindex < entity.Settings.Count-1;
                 cmdRemoveSetting.Enabled =
-                lblSettingA.Enabled =
-                lblSettingB.Enabled =
+                lblArgAs.Enabled =
                 numSettingA.Enabled =
                 numSettingB.Enabled =
                 numSettingC.Enabled = true;
                 numSettingA.Value = entity.Settings[settingindex].ValueA;
                 numSettingB.Value = entity.Settings[settingindex].ValueB;
-                SetCVal(entity.Settings[settingindex].ValueA | (entity.Settings[settingindex].ValueB << 8));
+                SetCVal(entity.Settings[settingindex].Value);
             }
-            settingdirty = false;
+            dirty.Pop();
         }
 
         private void cmdPreviousSetting_Click(object sender,EventArgs e)
@@ -456,58 +478,57 @@ namespace CrashEdit
 
         private void numSettingA_ValueChanged(object sender,EventArgs e)
         {
-            if (!settingdirty)
+            if (!Dirty)
             {
                 EntitySetting s = entity.Settings[settingindex];
                 entity.Settings[settingindex] = new EntitySetting((byte)numSettingA.Value,s.ValueB);
-                settingdirty = true;
-                SetCVal(entity.Settings[settingindex].ValueA | (entity.Settings[settingindex].ValueB << 8));
-                settingdirty = false;
+                SetCVal(entity.Settings[settingindex].Value);
+                lblArgAs.Text = MakeArgAsText();
             }
         }
 
         private void numSettingB_ValueChanged(object sender,EventArgs e)
         {
-            if (!settingdirty)
+            if (!Dirty)
             {
                 EntitySetting s = entity.Settings[settingindex];
                 entity.Settings[settingindex] = new EntitySetting(s.ValueA,(int)numSettingB.Value);
-                settingdirty = true;
-                SetCVal(entity.Settings[settingindex].ValueA | (entity.Settings[settingindex].ValueB << 8));
-                settingdirty = false;
+                SetCVal(entity.Settings[settingindex].Value);
+                lblArgAs.Text = MakeArgAsText();
             }
         }
 
         internal void SetCVal(long val)
         {
+            dirty.Push(true);
             // this is fucking stupid
-            numSettingC.Minimum = long.MinValue;
-            numSettingC.Maximum = long.MaxValue;
             if (numSettingC.Hexadecimal)
             {
+                if (val > 0xFFFFFFFF) val = 0xFFFFFFFF;
+                else if (val < 0) val &= 0xFFFFFFFF;
                 numSettingC.Value = unchecked((uint)val);
-                numSettingC.Minimum = uint.MinValue;
-                numSettingC.Maximum = uint.MaxValue;
             }
             else
             {
+                if (val > 0xFFFFFFFF) val = 0x7FFFFFFF;
+                else if (val > 0x7FFFFFFF) val = -0x100000000 + val;
+                else if (val < -0x80000000) val = -0x80000000;
                 numSettingC.Value = unchecked((int)val);
-                numSettingC.Minimum = int.MinValue;
-                numSettingC.Maximum = int.MaxValue;
             }
+            dirty.Pop();
         }
 
         private void numSettingC_ValueChanged(object sender, EventArgs e)
         {
-            if (!settingdirty)
+            if (!Dirty)
             {
-                EntitySetting s = entity.Settings[settingindex];
-                long c = (long)numSettingC.Value;
-                entity.Settings[settingindex] = new EntitySetting((byte)c, ((int)c >> 8));
-                settingdirty = true;
+                SetCVal((long)numSettingC.Value);
+                entity.Settings[settingindex] = new EntitySetting(((long)numSettingC.Value).UInt32ToInt32());
+                dirty.Push(true);
                 numSettingA.Value = entity.Settings[settingindex].ValueA;
                 numSettingB.Value = entity.Settings[settingindex].ValueB;
-                settingdirty = false;
+                dirty.Pop();
+                lblArgAs.Text = MakeArgAsText();
             }
         }
 
@@ -688,7 +709,7 @@ namespace CrashEdit
 
         private void UpdateVictim()
         {
-            victimdirty = true;
+            dirty.Push(true);
             if (victimindex >= entity.Victims.Count)
             {
                 victimindex = entity.Victims.Count-1;
@@ -719,7 +740,7 @@ namespace CrashEdit
                 cmdClearAllVictims.Enabled = true;
                 numVictimID.Value = entity.Victims[victimindex].VictimID;
             }
-            victimdirty = false;
+            dirty.Pop();
         }
 
         private void cmdPreviousVictim_Click(object sender,EventArgs e)
@@ -756,7 +777,7 @@ namespace CrashEdit
 
         private void numVictimID_ValueChanged(object sender,EventArgs e)
         {
-            if (!victimdirty)
+            if (!Dirty)
             {
                 entity.Victims[victimindex] = new EntityVictim((short)numVictimID.Value);
             }
@@ -1172,26 +1193,17 @@ namespace CrashEdit
         {
             if (controller is EntityController c)
             {
-                foreach (Chunk chunk in c.ZoneEntryController.EntryChunkController.NSFController.NSF.Chunks)
+                foreach (ZoneEntry zone in c.ZoneEntryController.EntryChunkController.NSFController.NSF.GetEntries<ZoneEntry>())
                 {
-                    if (chunk is EntryChunk)
+                    foreach (Entity otherentity in zone.Entities)
                     {
-                        foreach (Entry entry in ((EntryChunk)chunk).Entries)
+                        if (otherentity.ID.HasValue && otherentity.ID.Value == numEntityA.Value)
                         {
-                            if (entry is ZoneEntry zone)
+                            for (int i = 0; i < c.ZoneEntryController.ZoneEntry.ZoneCount; ++i)
                             {
-                                foreach (Entity otherentity in zone.Entities)
+                                if (zone.EID == BitConv.FromInt32(c.ZoneEntryController.ZoneEntry.Header, 0x194 + i * 4))
                                 {
-                                    if (otherentity.ID.HasValue && otherentity.ID.Value == numEntityA.Value)
-                                    {
-                                        for (int i = 0; i < c.ZoneEntryController.ZoneEntry.ZoneCount; ++i)
-                                        {
-                                            if (entry.EID == BitConv.FromInt32(c.ZoneEntryController.ZoneEntry.Header, 0x194 + i * 4))
-                                            {
-                                                entity.DrawListA.Rows[drawlistarowindex].Values[drawlistaentityindex] = (int)(i | (otherentity.ID << 8) | ((zone.Entities.IndexOf(otherentity) - BitConv.FromInt32(zone.Header, 0x188)) << 24));
-                                            }
-                                        }
-                                    }
+                                    entity.DrawListA.Rows[drawlistarowindex].Values[drawlistaentityindex] = (int)(i | (otherentity.ID << 8) | ((zone.Entities.IndexOf(otherentity) - BitConv.FromInt32(zone.Header, 0x188)) << 24));
                                 }
                             }
                         }
@@ -1200,26 +1212,17 @@ namespace CrashEdit
             }
             else if (controller is NewEntityController nc)
             {
-                foreach (Chunk chunk in nc.NewZoneEntryController.EntryChunkController.NSFController.NSF.Chunks)
+                foreach (NewZoneEntry zone in nc.NewZoneEntryController.EntryChunkController.NSFController.NSF.GetEntries<NewZoneEntry>())
                 {
-                    if (chunk is EntryChunk)
+                    foreach (Entity otherentity in zone.Entities)
                     {
-                        foreach (Entry entry in ((EntryChunk)chunk).Entries)
+                        if (otherentity.ID.HasValue && otherentity.ID.Value == numEntityA.Value)
                         {
-                            if (entry is NewZoneEntry zone)
+                            for (int i = 0; i < nc.NewZoneEntryController.NewZoneEntry.ZoneCount; ++i)
                             {
-                                foreach (Entity otherentity in zone.Entities)
+                                if (zone.EID == BitConv.FromInt32(nc.NewZoneEntryController.NewZoneEntry.Header, 0x194 + i * 4))
                                 {
-                                    if (otherentity.ID.HasValue && otherentity.ID.Value == numEntityA.Value)
-                                    {
-                                        for (int i = 0; i < nc.NewZoneEntryController.NewZoneEntry.ZoneCount; ++i)
-                                        {
-                                            if (entry.EID == BitConv.FromInt32(nc.NewZoneEntryController.NewZoneEntry.Header, 0x194 + i * 4))
-                                            {
-                                                entity.DrawListA.Rows[drawlistarowindex].Values[drawlistaentityindex] = (int)(i | (otherentity.ID << 8) | ((zone.Entities.IndexOf(otherentity) - BitConv.FromInt32(zone.Header, 0x188)) << 24));
-                                            }
-                                        }
-                                    }
+                                    entity.DrawListA.Rows[drawlistarowindex].Values[drawlistaentityindex] = (int)(i | (otherentity.ID << 8) | ((zone.Entities.IndexOf(otherentity) - BitConv.FromInt32(zone.Header, 0x188)) << 24));
                                 }
                             }
                         }
@@ -1371,26 +1374,17 @@ namespace CrashEdit
         {
             if (controller is EntityController c)
             {
-                foreach (Chunk chunk in c.ZoneEntryController.EntryChunkController.NSFController.NSF.Chunks)
+                foreach (ZoneEntry zone in c.ZoneEntryController.EntryChunkController.NSFController.NSF.GetEntries<ZoneEntry>())
                 {
-                    if (chunk is EntryChunk entrychunk)
+                    foreach (Entity otherentity in zone.Entities)
                     {
-                        foreach (Entry entry in entrychunk.Entries)
+                        if (otherentity.ID.HasValue && otherentity.ID.Value == numEntityB.Value)
                         {
-                            if (entry is ZoneEntry zone)
+                            for (int i = 0; i < c.ZoneEntryController.ZoneEntry.ZoneCount; ++i)
                             {
-                                foreach (Entity otherentity in zone.Entities)
+                                if (zone.EID == BitConv.FromInt32(c.ZoneEntryController.ZoneEntry.Header, 0x194 + i * 4))
                                 {
-                                    if (otherentity.ID.HasValue && otherentity.ID.Value == numEntityB.Value)
-                                    {
-                                        for (int i = 0; i < c.ZoneEntryController.ZoneEntry.ZoneCount; ++i)
-                                        {
-                                            if (entry.EID == BitConv.FromInt32(c.ZoneEntryController.ZoneEntry.Header, 0x194 + i * 4))
-                                            {
-                                                entity.DrawListB.Rows[drawlistbrowindex].Values[drawlistbentityindex] = (int)(i | (otherentity.ID << 8) | ((zone.Entities.IndexOf(otherentity) - BitConv.FromInt32(zone.Header, 0x188)) << 24));
-                                            }
-                                        }
-                                    }
+                                    entity.DrawListB.Rows[drawlistbrowindex].Values[drawlistbentityindex] = (int)(i | (otherentity.ID << 8) | ((zone.Entities.IndexOf(otherentity) - BitConv.FromInt32(zone.Header, 0x188)) << 24));
                                 }
                             }
                         }
@@ -1399,26 +1393,17 @@ namespace CrashEdit
             }
             else if (controller is NewEntityController nc)
             {
-                foreach (Chunk chunk in nc.NewZoneEntryController.EntryChunkController.NSFController.NSF.Chunks)
+                foreach (NewZoneEntry zone in nc.NewZoneEntryController.EntryChunkController.NSFController.NSF.GetEntries<NewZoneEntry>())
                 {
-                    if (chunk is EntryChunk entrychunk)
+                    foreach (Entity otherentity in zone.Entities)
                     {
-                        foreach (Entry entry in entrychunk.Entries)
+                        if (otherentity.ID.HasValue && otherentity.ID.Value == numEntityB.Value)
                         {
-                            if (entry is NewZoneEntry zone)
+                            for (int i = 0; i < nc.NewZoneEntryController.NewZoneEntry.ZoneCount; ++i)
                             {
-                                foreach (Entity otherentity in zone.Entities)
+                                if (zone.EID == BitConv.FromInt32(nc.NewZoneEntryController.NewZoneEntry.Header, 0x194 + i * 4))
                                 {
-                                    if (otherentity.ID.HasValue && otherentity.ID.Value == numEntityB.Value)
-                                    {
-                                        for (int i = 0; i < nc.NewZoneEntryController.NewZoneEntry.ZoneCount; ++i)
-                                        {
-                                            if (entry.EID == BitConv.FromInt32(nc.NewZoneEntryController.NewZoneEntry.Header, 0x194 + i * 4))
-                                            {
-                                                entity.DrawListB.Rows[drawlistbrowindex].Values[drawlistbentityindex] = (int)(i | (otherentity.ID << 8) | ((zone.Entities.IndexOf(otherentity) - BitConv.FromInt32(zone.Header, 0x188)) << 24));
-                                            }
-                                        }
-                                    }
+                                    entity.DrawListB.Rows[drawlistbrowindex].Values[drawlistbentityindex] = (int)(i | (otherentity.ID << 8) | ((zone.Entities.IndexOf(otherentity) - BitConv.FromInt32(zone.Header, 0x188)) << 24));
                                 }
                             }
                         }
@@ -1803,7 +1788,7 @@ namespace CrashEdit
             }
 
             lblPayload.Visible = true;
-            lblPayload.Text = $"Payload is {loadedchunks.Count} normal chunks";
+            lblPayload.Text = $"Payload is ~{loadedchunks.Count} normal chunks";
             lblPayloadTexture.Visible = true;
             lblPayloadTexture.Text = $"Payload is {loadedtexturechunks.Count} texture chunks";
             lblPayloadSound.Visible = true;

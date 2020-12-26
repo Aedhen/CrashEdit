@@ -6,6 +6,8 @@ using DiscUtils.Iso9660;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -79,7 +81,7 @@ namespace CrashEdit
         private BackgroundWorker bgwMakeBIN;
         private ProgressBarForm dlgProgress;
 
-        private static bool PAL = Settings.Default.PAL;
+        public static bool PAL { get; private set; } = Settings.Default.PAL;
         private const int RateNTSC = 30;
         private const int RatePAL = 25;
 
@@ -468,7 +470,6 @@ namespace CrashEdit
             File.Copy(nsdFilename, Path.Combine(basePath, Path.GetFileName(nsdFilename)));
             nsfFilename = Path.Combine(basePath, Path.GetFileName(nsfFilename));
             nsdFilename = Path.Combine(basePath, Path.GetFileName(nsdFilename));
-            //PatchNSD(nsdFilename, true, nsfBox.NSFController, true);
             NsfHelper.SaveNSF(nsfFilename, nsf, true);
             var fs = new CDBuilder();
             fs.AddFile("S0\\" + Path.GetFileName(nsfFilename) + ";1", nsfFilename);
@@ -657,8 +658,8 @@ namespace CrashEdit
             {
                 nsfdata = null;
             }
-            byte[] olddata = File.ReadAllBytes(filename);
-            if (nsfdata == null || (nsfdata.Length == olddata.Length && nsfdata.SequenceEqual(olddata)) || DarkMessageBox.ShowWarning(Resources.CloseNSF, Resources.Close_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
+            byte[] olddata = File.Exists(filename) ? File.ReadAllBytes(filename) : null;
+            if ((olddata != null && (nsfdata == null || (nsfdata.Length == olddata.Length && nsfdata.SequenceEqual(olddata)))) || MessageBox.Show(Resources.CloseNSF, Resources.Close_ConfirmationPrompt, MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 TabPage tab = tbcTabs.SelectedTab;
                 if (tab != null)

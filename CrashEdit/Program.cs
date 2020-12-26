@@ -29,36 +29,48 @@ namespace CrashEdit
         public static void LoadC3AnimLinks()
         {
             C3AnimLinks.Clear();
-            XmlReader r;
+            XmlReader r = null;
             try
             {
                 r = XmlReader.Create("CrashEdit.exe.animmodel.config");
+                while (r.Read())
+                {
+                    switch (r.NodeType)
+                    {
+                        case XmlNodeType.Element:
+                            if (r.Name == "animmodel")
+                            {
+                                string anim = r.GetAttribute("anim");
+                                string model = r.GetAttribute("model");
+                                C3AnimLinks.Add(anim, model);
+                            }
+                            break;
+                    }
+                }
             }
             catch (System.IO.FileNotFoundException)
             {
                 return;
             }
-            while (r.Read())
+            finally
             {
-                switch (r.NodeType)
+                if (r != null)
                 {
-                    case XmlNodeType.Element:
-                        if (r.Name == "animmodel")
-                        {
-                            string anim = r.GetAttribute("anim");
-                            string model = r.GetAttribute("model");
-                            C3AnimLinks.Add(anim, model);
-                        }
-                        break;
+                    r.Close();
+                    r.Dispose();
                 }
             }
-            r.Close();
-            r.Dispose();
         }
 
         [STAThread]
         internal static void Main(string[] args)
         {
+            if (Properties.Settings.Default.UpgradeSettings)
+            {
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.UpgradeSettings = false;
+                Properties.Settings.Default.Save();
+            }
             try
             {
                 Properties.Resources.Culture = Crash.UI.Properties.Resources.Culture = new System.Globalization.CultureInfo(Properties.Settings.Default.Language);
@@ -68,6 +80,7 @@ namespace CrashEdit
                 Properties.Settings.Default.Language = "en";
             }
 
+            Properties.Settings.Default.Save();
             Properties.Settings.Default.Save();
             LoadC3AnimLinks();
             Application.EnableVisualStyles();

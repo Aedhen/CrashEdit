@@ -43,22 +43,13 @@ namespace CrashEdit
             short id = 1;
             while (true)
             {
-                foreach (Chunk chunk in EntryChunkController.NSFController.NSF.Chunks)
+                foreach (MapEntry zone in EntryChunkController.NSFController.NSF.GetEntries<MapEntry>())
                 {
-                    if (chunk is EntryChunk entrychunk)
+                    foreach (OldEntity otherentity in zone.Entities)
                     {
-                        foreach (Entry entry in entrychunk.Entries)
+                        if (otherentity.ID == id)
                         {
-                            if (entry is MapEntry zone)
-                            {
-                                foreach (OldEntity otherentity in zone.Entities)
-                                {
-                                    if (otherentity.ID == id)
-                                    {
-                                        goto FOUND_ID;
-                                    }
-                                }
-                            }
+                            goto FOUND_ID;
                         }
                     }
                 }
@@ -67,10 +58,9 @@ namespace CrashEdit
                 ++id;
                 continue;
             }
-            OldEntity newentity = OldEntity.Load(new OldEntity(0,0x00030018,id,0,0,0,0,0,new List<EntityPosition>() { new EntityPosition(0,0,0) },0).Save());
+            OldEntity newentity = OldEntity.Load(new OldEntity(0x0018,3,0,id,0,0,0,0,0,new List<EntityPosition>() { new EntityPosition(0,0,0) },0).Save());
             MapEntry.Entities.Add(newentity);
             AddNode(new OldEntityController(this,newentity));
-            MapEntry.EntityCount = MapEntry.Entities.Count;
         }
     }
 }

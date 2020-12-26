@@ -304,8 +304,7 @@
 
                 nsfc.Node.TreeView.BeginUpdate();
                 var order_updated = false;
-                foreach (TreeNode node in nsfc.Node.Nodes
-                ) // nsd patching might have moved entries, recreate moved entry chunks if that's the case
+                foreach (TreeNode node in nsfc.Node.Nodes) // nsd patching might have moved entries, recreate moved entry chunks if that's the case
                     if (node.Tag is EntryChunkController entrychunkcontroller)
                     {
                         var i = 0;

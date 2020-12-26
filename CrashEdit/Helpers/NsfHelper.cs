@@ -45,64 +45,46 @@
             switch (gameVersion)
             {
                 case GameVersion.Crash1:
-                    foreach (Chunk chunk in nsf.Chunks)
+                    foreach (OldZoneEntry zone in nsf.GetEntries<OldZoneEntry>())
                     {
-                        if (chunk is EntryChunk entrychunk)
+                        foreach (OldEntity entity in zone.Entities)
                         {
-                            foreach (Entry entry in entrychunk.Entries)
+                            if (entity.ID >= 0x130)
                             {
-                                if (entry is OldZoneEntry zone)
-                                {
-                                    foreach (OldEntity entity in zone.Entities)
-                                    {
-                                        if (entity.ID >= 0x130)
-                                        {
-                                            DarkMessageBox.ShowWarning(string.Format("An entity (ID {0}) exceeds maximum ID of 303.", entity.ID), "Entity ID Error");
-                                        }
-                                        else if (entity.ID <= 0)
-                                        {
-                                            DarkMessageBox.ShowWarning(string.Format("An entity has invalid ID {0}.", entity.ID), "Entity ID Error");
-                                        }
-                                    }
-                                }
+                                MessageBox.Show(string.Format("An entity (ID {0}) exceeds maximum ID of 303.", entity.ID), "Entity ID Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
+                            else if (entity.ID <= 0)
+                            {
+                                MessageBox.Show(string.Format("An entity has invalid ID {0}.", entity.ID), "Entity ID Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             }
                         }
                     }
                     break;
                 case GameVersion.Crash2:
-                    foreach (Chunk chunk in nsf.Chunks)
+                    foreach (ZoneEntry zone in nsf.GetEntries<ZoneEntry>())
                     {
-                        if (chunk is EntryChunk entrychunk)
+                        foreach (Entity entity in zone.Entities)
                         {
-                            foreach (Entry entry in entrychunk.Entries)
+                            if ((entity.ID != null && entity.ID >= 0x400) || (entity.AlternateID != null && entity.AlternateID >= 0x400))
                             {
-                                if (entry is ZoneEntry zone)
+                                if (entity.Name != null)
                                 {
-                                    foreach (Entity entity in zone.Entities)
-                                    {
-                                        if ((entity.ID != null && entity.ID >= 0x400) || (entity.AlternateID != null && entity.AlternateID >= 0x400))
-                                        {
-                                            if (entity.Name != null)
-                                            {
-                                                DarkMessageBox.ShowWarning(string.Format("Entity {0} (ID {1}) exceeds maximum ID of 1023.", entity.Name, entity.ID != null ? entity.ID : entity.AlternateID), "Entity ID Error");
-                                            }
-                                            else
-                                            {
-                                                DarkMessageBox.ShowWarning(string.Format("An entity (ID {0}) exceeds maximum ID of 1023.", entity.ID != null ? entity.ID : entity.AlternateID), "Entity ID Error");
-                                            }
-                                        }
-                                        else if ((entity.ID != null && entity.ID <= 0) || (entity.AlternateID != null && entity.AlternateID <= 0))
-                                        {
-                                            if (entity.Name != null)
-                                            {
-                                                DarkMessageBox.ShowWarning(string.Format("Entity {0} has invalid ID {1}.", entity.Name, entity.ID != null ? entity.ID : entity.AlternateID), "Entity ID Error");
-                                            }
-                                            else
-                                            {
-                                                DarkMessageBox.ShowWarning(string.Format("An entity has invalid ID {0}.", entity.ID != null ? entity.ID : entity.AlternateID), "Entity ID Error");
-                                            }
-                                        }
-                                    }
+                                    MessageBox.Show(string.Format("Entity {0} (ID {1}) exceeds maximum ID of 1023.", entity.Name, entity.ID != null ? entity.ID : entity.AlternateID), "Entity ID Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(string.Format("An entity (ID {0}) exceeds maximum ID of 1023.", entity.ID != null ? entity.ID : entity.AlternateID), "Entity ID Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                }
+                            }
+                            else if ((entity.ID != null && entity.ID <= 0) || (entity.AlternateID != null && entity.AlternateID <= 0))
+                            {
+                                if (entity.Name != null)
+                                {
+                                    MessageBox.Show(string.Format("Entity {0} has invalid ID {1}.", entity.Name, entity.ID != null ? entity.ID : entity.AlternateID), "Entity ID Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(string.Format("An entity has invalid ID {0}.", entity.ID != null ? entity.ID : entity.AlternateID), "Entity ID Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 }
                             }
                         }

@@ -444,7 +444,7 @@ namespace CrashEdit
             range = Math.Max(CameraRangeMinimum, (int)(Math.Sqrt(Math.Pow(maxx - midx, 2) + Math.Pow(maxy - midy, 2) + Math.Pow(maxz - midz, 2)) * 1.15));
             range += CameraRangeMargin;
             rotx = 0;
-            roty = 0;
+            roty = 15;
             fullrange = range;
             Invalidate();
         }

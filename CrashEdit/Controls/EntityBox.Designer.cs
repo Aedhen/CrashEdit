@@ -251,8 +251,8 @@ namespace CrashEdit
             this.tabGeneral.SuspendLayout();
             this.fraName.SuspendLayout();
             this.fraType.SuspendLayout();
+            this.lblArgAs = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numType)).BeginInit();
-            this.fraSubtype.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSubtype)).BeginInit();
             this.fraSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSettingC)).BeginInit();
@@ -842,10 +842,10 @@ namespace CrashEdit
             this.fraID.ForeColor = System.Drawing.SystemColors.Window;
             this.fraID.Location = new System.Drawing.Point(241, 3);
             this.fraID.Name = "fraID";
-            this.fraID.Size = new System.Drawing.Size(132, 129);
+            this.fraID.Size = new System.Drawing.Size(217, 72);
             this.fraID.TabIndex = 3;
             this.fraID.TabStop = false;
-            this.fraID.Text = "ID";
+            this.fraID.Text = "ID && Look-up ID";
             // 
             // numID
             // 
@@ -888,8 +888,7 @@ namespace CrashEdit
             // numID2
             // 
             this.numID2.Location = new System.Drawing.Point(6, 96);
-            this.numID2.Maximum = new decimal(new int[] {
-            2147483647,
+            this.numID2.Maximum = new decimal(new int[] {            2147483647,
             0,
             0,
             0});
@@ -2944,7 +2943,16 @@ namespace CrashEdit
             this.cmdNextRowDrawA.Text = "Next";
             this.cmdNextRowDrawA.Click += new System.EventHandler(this.cmdNextRowDrawA_Click);
             // 
-            // darkToolStrip
+            // lblArgAs
+            // 
+            this.lblArgAs.AutoSize = true;
+            this.lblArgAs.Location = new System.Drawing.Point(194, 45);
+            this.lblArgAs.Name = "lblArgAs";
+            this.lblArgAs.Size = new System.Drawing.Size(107, 52);
+            this.lblArgAs.TabIndex = 9;
+            this.lblArgAs.Text = "<EntityBox_lblArgAs>\r\n<EntityBox_lblArgAs>\r\n<EntityBox_lblArgAs>\r\n<EntityBox_lblA" +
+    "rgAs>";
+            //             // darkToolStrip
             // 
             this.darkToolStrip.AutoSize = false;
             this.darkToolStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
@@ -3093,6 +3101,7 @@ namespace CrashEdit
             this.fraID.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numID)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numID2)).EndInit();
+            this.tabGeneral.PerformLayout();
             this.tabSpecial.ResumeLayout(false);
             this.fraZMod.ResumeLayout(false);
             this.fraZMod.PerformLayout();
@@ -3402,5 +3411,6 @@ namespace CrashEdit
         private DarkUI.Controls.DarkLabel lblPayloadTexture;
         private DarkUI.Controls.DarkLabel lblPayloadSound;
         private DarkUI.Controls.DarkLabel lblVerifyLoadLists;
+        private System.Windows.Forms.Label lblArgAs;
     }
 }

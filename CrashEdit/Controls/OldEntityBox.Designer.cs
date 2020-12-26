@@ -28,6 +28,7 @@ namespace CrashEdit
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.numType = new DarkUI.Controls.DarkNumericUpDown();
             this.fraType = new System.Windows.Forms.GroupBox();
             this.lblCodeName = new DarkUI.Controls.DarkLabel();
@@ -64,6 +65,9 @@ namespace CrashEdit
             this.numB = new DarkUI.Controls.DarkNumericUpDown();
             this.numA = new DarkUI.Controls.DarkNumericUpDown();
             this.numFlags = new DarkUI.Controls.DarkNumericUpDown();
+            this.numSpawn = new System.Windows.Forms.NumericUpDown();
+            this.tipHover = new System.Windows.Forms.ToolTip(this.components);
+            this.fraSpawn = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.numType)).BeginInit();
             this.fraType.SuspendLayout();
             this.fraSubtype.SuspendLayout();
@@ -81,6 +85,8 @@ namespace CrashEdit
             ((System.ComponentModel.ISupportInitialize)(this.numB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numA)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numFlags)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSpawn)).BeginInit();
+            this.fraSpawn.SuspendLayout();
             this.SuspendLayout();
             // 
             // numType
@@ -117,7 +123,7 @@ namespace CrashEdit
             this.lblCodeName.Name = "lblCodeName";
             this.lblCodeName.Size = new System.Drawing.Size(99, 18);
             this.lblCodeName.TabIndex = 9;
-            this.lblCodeName.Text = "GOOLC";
+            this.lblCodeName.Text = "(Unknown)";
             this.lblCodeName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // fraSubtype
@@ -382,6 +388,7 @@ namespace CrashEdit
             // 
             this.tabGeneral.AutoScroll = true;
             this.tabGeneral.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.tabGeneral.Controls.Add(this.fraSpawn);
             this.tabGeneral.Controls.Add(this.fraSettings);
             this.tabGeneral.Controls.Add(this.fraType);
             this.tabGeneral.Controls.Add(this.fraSubtype);
@@ -558,7 +565,7 @@ namespace CrashEdit
             this.numFlags.Hexadecimal = true;
             this.numFlags.Location = new System.Drawing.Point(62, 18);
             this.numFlags.Maximum = new decimal(new int[] {
-            -1,
+            65535,
             0,
             0,
             0});
@@ -566,6 +573,34 @@ namespace CrashEdit
             this.numFlags.Size = new System.Drawing.Size(86, 21);
             this.numFlags.TabIndex = 2;
             this.numFlags.ValueChanged += new System.EventHandler(this.numUnknown_ValueChanged);
+            // 
+            // numSpawn
+            // 
+            this.numSpawn.Location = new System.Drawing.Point(6, 19);
+            this.numSpawn.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.numSpawn.Name = "numSpawn";
+            this.numSpawn.Size = new System.Drawing.Size(77, 20);
+            this.numSpawn.TabIndex = 12;
+            this.numSpawn.ValueChanged += new System.EventHandler(this.numSpawn_ValueChanged);
+            // 
+            // tipHover
+            // 
+            this.tipHover.AutomaticDelay = 250;
+            // 
+            // fraSpawn
+            // 
+            this.fraSpawn.Controls.Add(this.numSpawn);
+            this.fraSpawn.Location = new System.Drawing.Point(209, 183);
+            this.fraSpawn.Name = "fraSpawn";
+            this.fraSpawn.Size = new System.Drawing.Size(89, 49);
+            this.fraSpawn.TabIndex = 4;
+            this.fraSpawn.TabStop = false;
+            this.fraSpawn.Text = "Spawn [?]";
+            this.tipHover.SetToolTip(this.fraSpawn, "Must be set to 3, or entity will not spawn!");
             // 
             // OldEntityBox
             // 
@@ -593,6 +628,8 @@ namespace CrashEdit
             ((System.ComponentModel.ISupportInitialize)(this.numB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numA)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numFlags)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSpawn)).EndInit();
+            this.fraSpawn.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -635,5 +672,8 @@ namespace CrashEdit
         private DarkUI.Controls.DarkCheckBox chkHexA;
         private DarkUI.Controls.DarkCheckBox chkHexFlags;
         private DarkUI.Controls.DarkButton cmdInterpolate;
+        private System.Windows.Forms.NumericUpDown numSpawn;
+        private System.Windows.Forms.ToolTip tipHover;
+        private System.Windows.Forms.GroupBox fraSpawn;
     }
 }
